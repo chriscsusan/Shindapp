@@ -4,19 +4,21 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+@Controller
 public class UserController {
 	
-	@RequestMapping(value = "/participants", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String participantList(Locale locale, Model model) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		
+		
 
 		
-		return "home";
+		return "list";
 	}
 
 }
