@@ -1,4 +1,4 @@
-package co.grandcircus.shindapp;
+package co.grandcircus.shindapp.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
