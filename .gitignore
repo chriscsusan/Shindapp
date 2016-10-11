@@ -1,0 +1,6 @@
+/target/
+.*
+!.gitignore
+/bin/
+local.properties
+*.jar
