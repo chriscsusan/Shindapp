@@ -4,20 +4,27 @@
 <head>
 <title>Home</title>
 </head>
-<body>
+<body background="https://a.wattpad.com/userbg/rodens.90645.jpg">
 	<h1>ShindApp</h1>
+	<a href="<c:url value="/sign-up"/>">Sign Up</a>
+	<br />
 	<a href="<c:url value="/list"/>">List of Potluckers</a>
+	<br />
 	<a href="<c:url value="/item"/>">List of Items</a>
 	
-	<P>The time on the server is ${serverTime}.</P>
-	<div>Username</div>
-	<div>Food</div>
-	<div>Food Allergies</div>
+
+	<br />
 	
+	<form action="main.jsp" method="GET">
+		Login: <input type="text" name="login"> <br /> Password: <input
+			type="text" name="password" /> <br /> <input type="submit"
+			value="Submit" />
+	</form>
 	
-	
+
 	<div></div>
 
 
 </body>
+
 </html>

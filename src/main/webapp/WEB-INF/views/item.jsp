@@ -5,10 +5,24 @@
 <title>Home</title>
 </head>
 <a href="<c:url value="/"/>">Home</a>
-<body>
+<body background="https://a.wattpad.com/userbg/rodens.90645.jpg">
 	<h1>Item List</h1>
 
+	<!-- In the form tag, you can put <form action="URL">  
+This sends the form data to the URL page-->
+	<form>
+		Items Bringing:<br> <input type="text" name="itemsbox"><br>
+		<input type="submit" value="Submit">
 
-	<P>The time on the server is ${serverTime}.</P>
+	</form>
+	<br />
+
+	<form>
+		Comments:<br> <input type="text" name="commentbox"><br>
+		<input type="submit" value="Submit">
+
+	</form>
 </body>
+
+
 </html>

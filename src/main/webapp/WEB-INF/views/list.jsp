@@ -5,7 +5,7 @@
 <title>Home</title>
 </head>
 <a href="<c:url value="/"/>">Home</a>
-<body>
+<body background="https://a.wattpad.com/userbg/rodens.90645.jpg">
 	<h1>List</h1>
 
 
@@ -13,4 +13,5 @@
 	<div>Food</div>
 	<div>Allergies</div>
 </body>
+
 </html>
