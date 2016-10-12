@@ -2,20 +2,14 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
+<title>Login</title>
 </head>
-<body background="https://a.wattpad.com/userbg/rodens.90645.jpg">
-	<h1>ShindApp</h1>
+<body background="https://images4.alphacoders.com/128/128796.jpg">
+	<h1>Shindapp</h1>
 	<a href="<c:url value="/sign-up"/>">Sign Up</a>
 	<br />
-	<a href="<c:url value="/list"/>">List of Potluckers</a>
-	<br />
-	<a href="<c:url value="/item"/>">List of Items</a>
-	
-
-	<br />
-	
-	<form action="main.jsp" method="GET">
+		
+	<form method="get" action="shindapphome">
 		Login: <input type="text" name="login"> <br /> Password: <input
 			type="text" name="password" /> <br /> <input type="submit"
 			value="Submit" />

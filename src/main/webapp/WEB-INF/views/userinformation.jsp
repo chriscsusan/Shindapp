@@ -1,23 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
 <title>Account Info</title>
 </head>
 <h1>Account Info</h1>
+<a href="<c:url value="/"/>">Sign Out</a><br>
+<a href="<c:url value="/shindapphome"/>">ShindApp Home</a>
 
-<form>
-		Name:<br> <input type="text" name="commentbox"><br>
-		Email:<br> <input type="text" name="commentbox"><br>
-		Phone Number:<br> <input type="text" name="commentbox"><br>
-		Allergies:<br> <input type="text" name="commentbox"><br>
-		<input type="submit" value="Submit">
+<body background="https://images4.alphacoders.com/128/128796.jpg">
+
+	<div>Name : Charlie Brown</div>
+	<div>Phone Number : (313)123-1234</div>
+	<div>Username: charlie.brown</div>
+	<div>Allergies: Peanuts</div>
+
+
+	<form>
+		<h3>Change Information</h3>
+		Username:<input type="text" name="commentbox"><br>
+		Password:<input type="text" name="commentbox"><br> Name:<input
+			type="text" name="commentbox"><br>Phone Number:<input
+			type="text" name="commentbox"><br> Allergies:<input
+			type="text" name="commentbox"><br> <input type="submit"
+			value="Submit">
 
 	</form>
-<body>
 
 </body>
 </html>

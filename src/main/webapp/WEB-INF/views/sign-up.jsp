@@ -4,8 +4,8 @@
 <head>
 <title>Home</title>
 </head>
-
-<body>
+<a href="<c:url value="/"/>">Home</a>
+<body background = "https://images4.alphacoders.com/128/128796.jpg">
 	<h1>Sign Up</h1>
 
 
