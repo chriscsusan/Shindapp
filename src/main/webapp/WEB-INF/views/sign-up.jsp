@@ -6,9 +6,16 @@
 </head>
 
 <body>
-	<h1>Sign In</h1>
+	<h1>Sign Up</h1>
 
 
 	<P>
+	<form action="main.jsp" method="GET">
+Login: <input type="text" name="login">
+<br />
+Password: <input type="text" name="password" />
+<br />
+<input type="submit" value="Submit" />
+</form>
 </body>
 </html>

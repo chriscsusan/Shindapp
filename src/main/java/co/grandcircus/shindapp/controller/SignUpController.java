@@ -13,7 +13,7 @@ public class SignUpController {
 	
 	@RequestMapping(value = "/sign-up", method = RequestMethod.GET)
 	public String participantList(Locale locale, Model model) {
-		//logger.info("Welcome home! The client locale is {}.", locale);
+		//logger.info("Welcome Home! The client locale is {}.", locale);
 		
 		
 		
