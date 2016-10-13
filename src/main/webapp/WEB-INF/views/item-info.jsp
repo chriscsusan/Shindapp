@@ -12,7 +12,7 @@
 	<P>The results for </P>
 	
 		<c:forEach var="result" items="${results}" >
-			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><c:out value="${ result.upc }"/>
+			<li><a href="<c:url value="/item/${result}"/>"><c:out value="${ result }"/></a>
 	</c:forEach>
 </body>
 </html>

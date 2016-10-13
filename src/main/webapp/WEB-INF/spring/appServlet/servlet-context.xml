@@ -21,7 +21,19 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="co.grandcircus.shindapp.controller" />
+		<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<beans:property name="ignoreResourceNotFound" value="true"/>
+		<beans:property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+		<beans:property name="locations">
+			<beans:list>
+				<beans:value>classpath:jdbc.properties</beans:value>
+				<beans:value>classpath:local.properties</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	
+	<context:component-scan base-package="co.grandcircus.shindapp" />
 	
 	
 	

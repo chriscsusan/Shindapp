@@ -9,10 +9,10 @@
 	<h1>Item List</h1>
 
 
-	<P>The results for </P>
+	<P>The allergens are </P>
 	
-		<c:forEach var="result" items="${results}" >
-			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><c:out value="${ result.upc }"/>
+		<c:forEach var="allergen" items="${allergens}" >
+			<li><c:out value="${ allergen }"/>
 	</c:forEach>
 </body>
 </html>

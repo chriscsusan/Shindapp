@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,40 +14,57 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import co.grandcircus.shindapp.model.Item;
+import co.grandcircus.shindapp.model.ItemSession;
 import co.grandcircus.shindapp.rest.HttpHelper;
 
+@Service
 public class ItemService {
 	
+	//private final static String API_KEY = "yqtv5hue36h96ww6qdtv3dvc";
+	//private final static String TEST_SESSION = "10aef9ce-5e01-44a3-a710-ad640d2a1642";
+	private final static String APP_ID = "potluck";
 	
+	@Value("${api_key}")
+	private String apiKey;
 	
-	private final static String API_KEY = "yqtv5hue36h96ww6qdtv3dvc";
-	private static String session = "";
+	@Value("${test_session}")
+	private String testSession;
 	
-	public static String getKey(){
-		return API_KEY;
+	public ItemService(){
+		
 	}
 	
-	public void getSession() {
-		session = getSessionID(API_KEY);
+	public String getKey(){
+		return apiKey;
+	}
+	public String getTestSession(){
+		return testSession;
 	}
 	
-	public String getSessionID(String key) {
-		String url = "http://api.foodessentials.com/createsession?uid=ert&devid=ert&appid=ert&f=json&v=2.00&api_key=" + key;
+//	public String getSession() {
+//		session = getSessionID();
+//		return session;
+//	}
+	
+	public ItemSession getSession() {
+		String url = "http://api.foodessentials.com/createsession?uid=ert&devid=ert&appid=" + APP_ID + "&f=json&v=2.00&api_key=" + apiKey;
 		// Use HTTP GET with the above URL
 		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
 			if (reader == null) {
 				throw new RuntimeException("Not found: " + url);
 			}
-			
-			JsonElement root = new JsonParser().parse(reader);
-			String session = root.getAsJsonObject().get("session_id").getAsString();
+			ItemSession itemSession = new ItemSession();
+			JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
+			itemSession.setSession(root.get("session_id").getAsString());
+			System.out.println(itemSession.getSession());
 						
-			return session;
+			return itemSession;
 		} catch (IOException ex) {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	public String getItemInfoByName(String session, String itemName, String key) {
+	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) {
+		ArrayList<Item> results = new ArrayList<>();
 		String url = "http://api.foodessentials.com/searchprods?q=" + itemName + "&sid=" + session + "&n=5&s=1&f=json&v=2.00&api_key=" + key;
 		// Use HTTP GET with the above URL
 		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
@@ -54,10 +73,39 @@ public class ItemService {
 			}
 			
 			JsonElement root = new JsonParser().parse(reader);
-			ArrayList<JsonElement> results = null;
-			results.add(root.getAsJsonObject().get("productsArray").getAsJsonArray());
+			JsonArray temp = root.getAsJsonObject().get("productsArray").getAsJsonArray();
+			for (JsonElement e: temp){
+				Item tempItem = new Item();
+				tempItem.setUpc(e.getAsJsonObject().get("upc").getAsString());
+				tempItem.setFoodName(e.getAsJsonObject().get("product_name").getAsString());
+				results.add(tempItem);
+			}
 						
-			return session;
+			return results;
+		} catch (IOException ex) {
+			throw new RuntimeException("Error reading from URL: " + url, ex);
+		}
+	}
+	
+	public ArrayList<String> getItemInfoByUPC(String upc) {
+		ArrayList<String> allergens = new ArrayList<>();
+		String url = "http://api.foodessentials.com/label?u=" + upc + "&sid=" + testSession + "&appid=" + APP_ID + "&f=json&api_key=" + apiKey;
+		// Use HTTP GET with the above URL
+		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
+			if (reader == null) {
+				throw new RuntimeException("Not found: " + url);
+			}
+			
+			JsonElement root = new JsonParser().parse(reader);
+			JsonArray allergensArray = root.getAsJsonObject().get("allergens").getAsJsonArray();
+			for (JsonElement e: allergensArray){
+				if(e.getAsJsonObject().get("allergen_value").getAsInt() > 0){
+					allergens.add(e.getAsJsonObject().get("allergen_name").getAsString());
+				}
+			}
+			
+						
+			return allergens;
 		} catch (IOException ex) {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}

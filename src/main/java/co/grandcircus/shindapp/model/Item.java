@@ -8,6 +8,7 @@ public class Item {
 	private ArrayList <String> ingredients;
 	private String whoIsBringingFood;
 	private ArrayList <String> allergens;
+	private String upc;
 	
 	
 	public ArrayList<String> getIngredients() {
@@ -34,6 +35,12 @@ public class Item {
 	}
 	public void setWhoIsBringingFood(String whoIsBringingFood) {
 		this.whoIsBringingFood = whoIsBringingFood;
+	}
+	public String getUpc() {
+		return upc;
+	}
+	public void setUpc(String upc) {
+		this.upc = upc;
 	}
 	
 	
