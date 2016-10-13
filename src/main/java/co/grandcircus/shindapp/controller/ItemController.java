@@ -1,6 +1,7 @@
 package co.grandcircus.shindapp.controller;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,18 @@ public class ItemController {
 	private ItemService itemService;
 	
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
-	public String participantList(Locale locale, Model model) {
+	public String participantList(Locale locale, Model model, @RequestParam(value="q", required=true) String searchTerms) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		String session = itemService.getSession().getSession();
 		
 		
 		
-		model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));		
+		try {
+			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 
 		
 
@@ -42,7 +48,12 @@ public class ItemController {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		String session = itemService.getSession().getSession();
 		
-		model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));			
+		try {
+			model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
 		return "item-info";
 	}
 	
@@ -50,8 +61,15 @@ public class ItemController {
 	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String upc) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		
-		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));			
+		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));
 		return "allergens";
+	}
+	
+	@RequestMapping(value = "/item-search", method = RequestMethod.GET)
+	public String itemSearch(Locale locale, Model model) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		
+		return "item-search";
 	}
 
 }
