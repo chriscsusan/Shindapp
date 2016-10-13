@@ -14,5 +14,7 @@
 		<c:forEach var="result" items="${results}" >
 			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><c:out value="${ result.upc }"/>
 	</c:forEach>
+	
+	
 </body>
 </html>

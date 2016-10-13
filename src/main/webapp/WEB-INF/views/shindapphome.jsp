@@ -37,6 +37,19 @@
 		</table>
 
 	</div>
+	
+	<table>
+	<tr>
+		<th>Name</th><th>Email</th><th>Roles</th>
+	</tr>
+	<c:forEach var="user" items="${users}" >
+		<tr>
+			<td><a href="<c:url value="/users/${user.id}"/>"><c:out value="${ user.firstName }"/> <c:out value="${ user.lastName }"/></a></td>
+			<td><c:out value="${ user.email }"/></td>
+			
+		</tr>
+	</c:forEach>
+</table>
 	<form>
 		Items Bringing:<br> <input type="text" name="itemsbox"><br>
 		Additional Comments:<br> <input type="text" name="commentbox"><br>
