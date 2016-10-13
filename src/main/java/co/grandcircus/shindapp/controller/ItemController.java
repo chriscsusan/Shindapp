@@ -33,7 +33,7 @@ public class ItemController {
 		
 
 		
-		return "userinformation";
+		return "item";
 	}
 
 	
