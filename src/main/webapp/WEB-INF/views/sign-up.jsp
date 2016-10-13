@@ -10,8 +10,8 @@
 
 
 	<P>
-	<form action="main.jsp" method="GET">
-Login: <input type="text" name="login">
+	<form method="get" action="shindapphome" >
+<h4>Create Account:</h4> Username: <input type="text" name="login">
 <br />
 Password: <input type="text" name="password" />
 <br />
