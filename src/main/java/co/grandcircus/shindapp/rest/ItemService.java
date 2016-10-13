@@ -2,6 +2,8 @@ package co.grandcircus.shindapp.rest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import co.grandcircus.shindapp.model.Allergen;
 import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.ItemSession;
 import co.grandcircus.shindapp.rest.HttpHelper;
@@ -63,9 +66,12 @@ public class ItemService {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) {
+	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
-		String url = "http://api.foodessentials.com/searchprods?q=" + itemName + "&sid=" + session + "&n=5&s=1&f=json&v=2.00&api_key=" + key;
+		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
+		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + session + "&n=5&s=1&f=json&v=2.00&api_key=" + key;
+		
+		
 		// Use HTTP GET with the above URL
 		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
 			if (reader == null) {
@@ -87,8 +93,8 @@ public class ItemService {
 		}
 	}
 	
-	public ArrayList<String> getItemInfoByUPC(String upc) {
-		ArrayList<String> allergens = new ArrayList<>();
+	public ArrayList<Allergen> getItemInfoByUPC(String upc) {
+		ArrayList<Allergen> allergens = new ArrayList<>();
 		String url = "http://api.foodessentials.com/label?u=" + upc + "&sid=" + testSession + "&appid=" + APP_ID + "&f=json&api_key=" + apiKey;
 		// Use HTTP GET with the above URL
 		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
@@ -100,7 +106,7 @@ public class ItemService {
 			JsonArray allergensArray = root.getAsJsonObject().get("allergens").getAsJsonArray();
 			for (JsonElement e: allergensArray){
 				if(e.getAsJsonObject().get("allergen_value").getAsInt() > 0){
-					allergens.add(e.getAsJsonObject().get("allergen_name").getAsString());
+					allergens.add(new Allergen(e.getAsJsonObject().get("allergen_name").getAsString(), e.getAsJsonObject().get("allergen_value").getAsString()));
 				}
 			}
 			
@@ -110,6 +116,6 @@ public class ItemService {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	
+		
 
 }

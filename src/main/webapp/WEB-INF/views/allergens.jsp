@@ -10,9 +10,9 @@
 
 
 	<P>The allergens are </P>
-	
 		<c:forEach var="allergen" items="${allergens}" >
-			<li><c:out value="${ allergen }"/>
+			<li><c:out value="${ allergen.name }"/>:<c:out value="${ allergen.value }"/> 
 	</c:forEach>
+	
 </body>
 </html>
