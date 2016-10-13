@@ -2,19 +2,23 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
+<title>Login</title>
 </head>
-<body>
-	<h1>ShindApp</h1>
-	<a href="<c:url value="/list"/>">List of Potluckers</a>
-	<a href="<c:url value="/item"/>">List of Items</a>
-	<P>The time on the server is ${serverTime}.</P>
-	<div>Username</div>
-	<div>Food</div>
-	<div>Food Allergies</div>
+<body background="https://images4.alphacoders.com/128/128796.jpg">
+	<h1>Shindapp</h1>
+	<a href="<c:url value="/sign-up"/>">Sign Up</a>
+	<br />
+		
+	<form method="get" action="shindapphome">
+		Login: <input type="text" name="login"> <br /> Password: <input
+			type="text" name="password" /> <br /> <input type="submit"
+			value="Submit" />
+	</form>
 	
+
 	<div></div>
 
 
 </body>
+
 </html>

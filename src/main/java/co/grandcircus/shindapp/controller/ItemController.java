@@ -31,9 +31,11 @@ public class ItemController {
 		model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));		
 
 		
+
 		
-		return "item";
+		return "userinformation";
 	}
+
 	
 	@RequestMapping(value = "/item-info/{result}", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model) {
@@ -51,4 +53,5 @@ public class ItemController {
 		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));			
 		return "allergens";
 	}
+
 }
