@@ -69,7 +69,7 @@ public class ItemService {
 	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
 		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
-		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + session + "&n=5&s=1&f=json&v=2.00&api_key=" + key;
+		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + testSession + "&n=5&s=1&f=json&v=2.00&api_key=" + apiKey;
 		
 		
 		// Use HTTP GET with the above URL
