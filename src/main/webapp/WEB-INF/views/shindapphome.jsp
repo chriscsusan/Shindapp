@@ -5,12 +5,12 @@
 <title>ShindApp Home</title>
 </head>
 <h1>Shindapp</h1>
-<a href="<c:url value="/"/>">Sign Out</a><br>
+<a href="<c:url value="/"/>">Sign Out</a>
+<br>
 <a href="<c:url value="/userinformation"/>">User Information</a>
 <body background="https://images4.alphacoders.com/128/128796.jpg">
 
 	<p>
-		
 	<div>
 		<table>
 			<tr>
@@ -19,37 +19,40 @@
 				<th>Attendee Allergies</th>
 			</tr>
 			<tr>
-				<td>Java The Hutt Potluck </td>
+				<td>Java The Hutt Potluck</td>
 				<td>Peanut Brittle, Sushi, Pizza</td>
 				<td>Tree Nuts, Sea Food, Gluten</td>
 			</tr>
 
 			<tr>
-				<td>Java The Hutt Potluck1 </td>
+				<td>Java The Hutt Potluck1</td>
 				<td>Pop, Shrimp, Fruit</td>
 				<td>Corn, Sea Food</td>
 			</tr>
 			<tr>
-				<td>Java The Hutt Potluck2 </td>
+				<td>Java The Hutt Potluck2</td>
 				<td>Salsa, Egg Salad, Tofu</td>
 				<td>Tomatos, Eggs, Soy</td>
 			</tr>
 		</table>
 
 	</div>
-	
+
 	<table>
-	<tr>
-		<th>Name</th><th>Email</th><th>Roles</th>
-	</tr>
-	<c:forEach var="user" items="${users}" >
 		<tr>
-			<td><a href="<c:url value="/users/${user.id}"/>"><c:out value="${ user.firstName }"/> <c:out value="${ user.lastName }"/></a></td>
-			<td><c:out value="${ user.email }"/></td>
-			
+			<th>Name</th>
+			<th>Email</th>
+			<th>Roles</th>
 		</tr>
-	</c:forEach>
-</table>
+		<c:forEach var="user" items="${users}">
+			<tr>
+				<td><a href="<c:url value="/users/${user.id}"/>"><c:out
+							value="${ user.firstName }" /> <c:out value="${ user.lastName }" /></a></td>
+				<td><c:out value="${ user.email }" /></td>
+
+			</tr>
+		</c:forEach>
+	</table>
 	<form>
 		Items Bringing:<br> <input type="text" name="itemsbox"><br>
 		Additional Comments:<br> <input type="text" name="commentbox"><br>
@@ -57,7 +60,15 @@
 
 	</form>
 	<p>
-		<br />
+	<form method=get action="<c:url value="/item?q=${searchTerms}"/>">
+		<div>
+			<label>Search for food item:</label><br><input type="text" name="q"
+				value="">
+		</div>
+		<button type="submit">Search</button>
+	</form>
+
+	<br />
 </body>
 
 </html>
