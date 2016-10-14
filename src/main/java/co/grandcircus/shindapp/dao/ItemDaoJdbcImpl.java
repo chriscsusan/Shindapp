@@ -65,12 +65,12 @@ public class ItemDaoJdbcImpl implements ItemDao {
 	}
 
 	@Override
-	public void addIngredient(Item item, User user, int ingredientIndex) throws FileNotFoundException {
+	public void addIngredient(User user, Item item) throws FileNotFoundException {
 		String sql = "INSERT INTO Ingredient SET participantID = ?, Ingredient = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 			statement.setInt(1, user.getId());
-			statement.setString(2, item.getIngredients().get(ingredientIndex));
+			statement.setString(2, item.getFoodName());
 
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {

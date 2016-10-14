@@ -1,10 +1,13 @@
 package co.grandcircus.shindapp.controller;
 
 
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+import co.grandcircus.shindapp.dao.ItemDao;
+import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.ItemSession;
+import co.grandcircus.shindapp.model.User;
 //import co.grandcircus.shindapp.rest.ItemService;
 import co.grandcircus.shindapp.rest.*;
 
@@ -22,15 +29,21 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 	
+	@Autowired
+	private ItemDao itemDao;
+	
+	@Value("${api_key}")
+	private String apiKey;
+	
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
-	public String participantList(Locale locale, Model model, @RequestParam(value="q", required=true) String searchTerms) {
+	public String participantList(Locale locale, Model model, @RequestParam(value="q", required=false) String searchTerms) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		String session = itemService.getSession();
 		
-		
-		
 		try {
 			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+
+		
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,6 +55,27 @@ public class ItemController {
 		return "item";
 	}
 
+	@RequestMapping(value = "/item", method = RequestMethod.POST)
+	public String participantListPost(User user, Item item, Model model, @RequestParam(value="q", required=false) String searchTerms) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		String session = itemService.getSession();
+		try {
+			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+			itemDao.addIngredient(user, item);
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+
+		
+
+		
+		return "item";
+	}
 	
 	@RequestMapping(value = "/item-info/{result}", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model) {
