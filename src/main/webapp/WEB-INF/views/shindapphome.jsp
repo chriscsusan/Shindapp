@@ -7,7 +7,11 @@
 <h1>Shindapp</h1>
 <a href="<c:url value="/"/>">Sign Out</a>
 <br>
+<<<<<<< Updated upstream
 <a href="<c:url value="/userinformation"/>">User Information</a>
+=======
+<a href="<c:url value="userinformation"/>">User Information</a>
+>>>>>>> Stashed changes
 <body background="https://images4.alphacoders.com/128/128796.jpg">
 
 	<p>
@@ -58,6 +62,14 @@
 		Additional Comments:<br> <input type="text" name="commentbox"><br>
 		<input type="submit" value="Submit">
 
+	</form>
+
+	<form method=get action="<c:url value="/item?q=${searchTerms}"/>">
+		
+			<label>Search Food</label><br>
+			<input type="text" name="q" value=""><br>
+		
+		<button type="submit">Search</button>
 	</form>
 	<p>
 	<form method=get action="<c:url value="/item?q=${searchTerms}"/>">
