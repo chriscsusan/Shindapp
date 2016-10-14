@@ -9,12 +9,15 @@
 	<h1>Item List</h1>
 
 
-	<P>The results for </P>
-	<form method = POST>
-		<c:forEach var="result" items="${results}" >
-			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><input name = "${result.foodName}" type="submit" value="Add">
-	</c:forEach>
+	<P>The results for</P>
+	<form method=POST>
+		<c:forEach var="result" items="${results}">
+			<li><a href="<c:url value="/item/${result.upc}"/>">
+			<c:out value="${ result.foodName }" />:</a>
+			<button name= "foodName" type="submit" value="${result.foodName}"> Add</button>
+			<input type = "hidden" name = "id" value = "${id}">
+		</c:forEach>
 	</form>
-	
+
 </body>
 </html>

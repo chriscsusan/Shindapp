@@ -106,4 +106,55 @@ public class ItemController {
 		return "item-search";
 	}
 
+	@RequestMapping(value = "/item/{id}", method = RequestMethod.POST)
+	public String participantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		String session = itemService.getSession();
+		try {
+			
+			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+			item.setParticipantID(id);
+			itemDao.addIngredient(user, item);
+			model.addAttribute("id", id) ;
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+
+		
+
+		
+		return "item";
+	}
+	
+	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
+	public String getParticipantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		String session = itemService.getSession();
+		try {
+			
+			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+			item.setParticipantID(id);
+			itemDao.addIngredient(user, item);
+			model.addAttribute("id", id) ;
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+
+		
+
+		
+		return "item";
+	}
+	
 }
+
