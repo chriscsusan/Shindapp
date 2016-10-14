@@ -1,20 +1,28 @@
 package co.grandcircus.shindapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
 
 	private String foodName;
-	private ArrayList <String> ingredients;
+	private List <String> ingredients;
 	private String whoIsBringingFood;
 	private ArrayList <String> allergens;
 	private String upc;
+	private Integer participantID;
 	
 	
-	public ArrayList<String> getIngredients() {
+	public Integer getParticipantID() {
+		return participantID;
+	}
+	public void setParticipantID(Integer participantID) {
+		this.participantID = participantID;
+	}
+	public List<String> getIngredients() {
 		return ingredients;
 	}
-	public void setIngredients(ArrayList<String> ingredients) {
+	public void setIngredients(List<String> ingredients) {
 		this.ingredients = ingredients;
 	}
 	public ArrayList<String> getAllergens() {

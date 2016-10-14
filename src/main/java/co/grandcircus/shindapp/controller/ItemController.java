@@ -25,7 +25,7 @@ public class ItemController {
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
 	public String participantList(Locale locale, Model model, @RequestParam(value="q", required=true) String searchTerms) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
-		String session = itemService.getSession().getSession();
+		String session = itemService.getSession();
 		
 		
 		
@@ -46,7 +46,7 @@ public class ItemController {
 	@RequestMapping(value = "/item-info/{result}", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
-		String session = itemService.getSession().getSession();
+		String session = itemService.getSession();
 		
 		try {
 			model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));

@@ -44,28 +44,27 @@ public class ItemService {
 		return testSession;
 	}
 	
-//	public String getSession() {
-//		session = getSessionID();
-//		return session;
-//	}
-	
-	public ItemSession getSession() {
-		String url = "http://api.foodessentials.com/createsession?uid=ert&devid=ert&appid=" + APP_ID + "&f=json&v=2.00&api_key=" + apiKey;
-		// Use HTTP GET with the above URL
-		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
-			if (reader == null) {
-				throw new RuntimeException("Not found: " + url);
-			}
-			ItemSession itemSession = new ItemSession();
-			JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
-			itemSession.setSession(root.get("session_id").getAsString());
-			System.out.println(itemSession.getSession());
-						
-			return itemSession;
-		} catch (IOException ex) {
-			throw new RuntimeException("Error reading from URL: " + url, ex);
-		}
+	public String getSession() {
+		return testSession;
 	}
+	
+//	public ItemSession getSession() {
+//		String url = "http://api.foodessentials.com/createsession?uid=ert&devid=ert&appid=" + APP_ID + "&f=json&v=2.00&api_key=" + apiKey;
+//		// Use HTTP GET with the above URL
+//		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
+//			if (reader == null) {
+//				throw new RuntimeException("Not found: " + url);
+//			}
+//			ItemSession itemSession = new ItemSession();
+//			JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
+//			itemSession.setSession(root.get("session_id").getAsString());
+//			System.out.println(itemSession.getSession());
+//						
+//			return itemSession;
+//		} catch (IOException ex) {
+//			throw new RuntimeException("Error reading from URL: " + url, ex);
+//		}
+//	}
 	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
 		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
