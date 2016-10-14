@@ -2,21 +2,43 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Login</title>
+
+<title>Welcome Page</title>
 </head>
 <body background="https://images4.alphacoders.com/128/128796.jpg">
-	<h1>Shindapp</h1>
-	<a href="<c:url value="/sign-up"/>">Sign Up</a>
+	<h1>Welcome!</h1>
+	
+	<!--  <a href="<c:url value="/sign-up"/>">Sign Up</a> -->
 	<br />
-		
+	
+	
+		<fieldset>
+		<legend>Register</legend>
 	<form method="get" action="shindapphome">
-		Login: <input type="text" name="login"> <br /> Password: <input
-			type="text" name="password" /> <br /> <input type="submit"
-			value="Submit" />
+		First Name: <input type="text" name="signup"> 
+		Last Name: <input type="text" name="password" />
+		Dish Bringing: <input type="text" name="password" /> 
+		<input type="submit" value="Submit" />
 	</form>
 	
+		</fieldset>
+	<div>
+		<table>
+			<tr>
+				<th>Potluck Event</th>
+				<th>List Of Foods</th>
+				<th>Attendee Allergies</th>
+			</tr>
+			<tr>
+				<td>Hello World Potluck</td>
+				<td>Peanut Brittle, Sushi, Pizza</td>
+				<td>Tree Nuts, Sea Food, Gluten</td>
+			</tr>
 
-	<div></div>
+		</table>
+
+	</div>
+	
 
 
 </body>
