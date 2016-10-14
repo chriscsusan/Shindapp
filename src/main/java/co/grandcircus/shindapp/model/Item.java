@@ -11,8 +11,15 @@ public class Item {
 	private ArrayList <String> allergens;
 	private String upc;
 	private Integer participantID;
+	private Integer id = 0;
 	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Integer getParticipantID() {
 		return participantID;
 	}

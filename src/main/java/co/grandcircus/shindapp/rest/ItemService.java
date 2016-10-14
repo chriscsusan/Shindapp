@@ -79,11 +79,14 @@ public class ItemService {
 			
 			JsonElement root = new JsonParser().parse(reader);
 			JsonArray temp = root.getAsJsonObject().get("productsArray").getAsJsonArray();
+			Integer i = 1;
 			for (JsonElement e: temp){
 				Item tempItem = new Item();
 				tempItem.setUpc(e.getAsJsonObject().get("upc").getAsString());
 				tempItem.setFoodName(e.getAsJsonObject().get("product_name").getAsString());
+				tempItem.setId(i);
 				results.add(tempItem);
+				i++;
 			}
 						
 			return results;
