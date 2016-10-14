@@ -10,11 +10,11 @@
 
 
 	<P>The results for </P>
-	
+	<form method = POST>
 		<c:forEach var="result" items="${results}" >
-			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><c:out value="${ result.upc }"/>
+			<li><a href="<c:url value="/item/${result.upc}"/>"><c:out value="${ result.foodName }"/>:</a><input name = "${result.foodName}" type="submit" value="Add">
 	</c:forEach>
-	
+	</form>
 	
 </body>
 </html>
