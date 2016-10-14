@@ -14,6 +14,7 @@
 	
 		<fieldset>
 		<legend>Register</legend>
+		
 	<form method="get" action="shindapphome">
 		First Name: <input type="text" name="signup"> 
 		Last Name: <input type="text" name="password" />
