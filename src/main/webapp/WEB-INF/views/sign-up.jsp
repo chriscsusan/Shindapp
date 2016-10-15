@@ -12,16 +12,20 @@
 <fieldset >
 <legend>Register</legend>
 <input type='hidden' name='submitted' id='submitted' value='1'/>
+
 <label for='name' >First Name*: </label>
-<input type='text' name='name' id='name' maxlength="50" />
+<input type="text" name="firstName" value="${signup.firstName}"/>
+
 <label for='name' >Last Name*:</label>
-<input type='text' name='name' id='name' maxlength="50" />
+<input type="text" name="lastName" value="${signup.lastName}"/>
  
-<label for='username' >UserName*:</label>
-<input type='text' name='username' id='username' maxlength="50" />
+<label for='phonenumber' >Phone Number*:</label>
+<input type="text" name="phoneNumber" value="${signup.phoneNumber}"/>
  
-<label for='password' >Password*:</label>
-<input type='password' name='password' id='password' maxlength="50" />
+<label for='dish' >Dish name*:</label>
+<input type="text" name="dishName" value="${signup.dishName}"/>
+
+
 <input type='submit' name='Submit' value='Submit' />
  
 </fieldset>

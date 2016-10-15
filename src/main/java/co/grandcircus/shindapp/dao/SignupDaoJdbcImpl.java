@@ -37,14 +37,15 @@ import co.grandcircus.shindapp.model.Signup;
 			try (Connection connection = connectionFactory.getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql)) {
-				List<Signup> Users = new ArrayList<Signup>();
+				List<Signup> signup = new ArrayList<Signup>();
+				List<Signup> signup;
 				while (result.next()) {
 					String firstName = result.getString("firstname");
 					String  lastName= result.getString("lastname");
 					String phoneNumber = result.getString("phonenumber");
 					String dishName = result.getString("dishName");
 					
-					signup.add(new signup(firstName, lastName,phoneNumber,dishName));
+					signup.add(new Signup(firstName,lastName,phoneNumber,dishName));
 					
 				}
 				return signup;

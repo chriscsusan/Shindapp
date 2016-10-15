@@ -23,10 +23,10 @@ public interface SignupDao {
 	List<Signup> getAllSignupSortedBy(String sortOrder) throws IllegalArgumentException;
 
 	
-	Signup getSignup(String firstname) throws NameNotFoundException;
+	//Signup getSignup(String firstName) throws NameNotFoundException;
 	
 	
-	Signup getSignupByFirstnameAndLastName(String firstName, String lastName, String phoneNumber, String dishName);
+	//Signup getSignupByFirstnameAndLastName(String firstName, String lastName, String phoneNumber, String dishName);
 	
 	
 	String addSignup(Signup signup);
