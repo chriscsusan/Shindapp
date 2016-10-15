@@ -8,12 +8,14 @@ public interface ItemDao {
 
 	public Item getAllIngredients(User user);
 
-	void deleteIngredient(int ingredientIndex, Item item, User user) throws FileNotFoundException;
+	//void deleteIngredient(int ingredientIndex, Item item, User user) throws FileNotFoundException;
 
 	//void addIngredient(Item item, User user, int ingredientIndex) throws FileNotFoundException;
 
 	//void addIngredient(User user, int ingredientIndex) throws FileNotFoundException;
 
 	void addIngredient(User user, Item item) throws FileNotFoundException;
+
+	void deleteIngredient(Item item, User user) throws FileNotFoundException;
 	
 }

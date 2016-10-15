@@ -36,30 +36,31 @@ public class ItemController {
 	private String apiKey;
 	
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
-	public String participantList(Locale locale, Model model, @RequestParam(value="q", required=false) String searchTerms) {
+	public String participantList(User user, Item item, Locale locale, Model model, @RequestParam(value="q", required=false) String searchTerms, @RequestParam(value="id", required=true) int id) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		String session = itemService.getSession();
 		
 		try {
+			item.setParticipantID(id);
+			if(searchTerms==null){
+				
+			}
 			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
-
 		
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		} 		
 
-		
-
-		
 		return "item";
 	}
 
 	@RequestMapping(value = "/item", method = RequestMethod.POST)
-	public String participantListPost(User user, Item item, Model model, @RequestParam(value="q", required=false) String searchTerms) {
+	public String participantListPost(User user, Item item, Model model, @RequestParam(value="q", required=false) String searchTerms, @RequestParam(value="id", required=true) int id) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		String session = itemService.getSession();
 		try {
+
 			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
 			itemDao.addIngredient(user, item);
 			
@@ -77,25 +78,39 @@ public class ItemController {
 		return "item";
 	}
 	
-	@RequestMapping(value = "/item-info/{result}", method = RequestMethod.GET)
-	public String itemInfo(Locale locale, Model model) {
+	@RequestMapping(value = "/item-info", method = RequestMethod.GET)
+	public String itemInfo(Locale locale, Model model, Item item, @RequestParam(value="id", required=false) int id) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
-		String session = itemService.getSession();
 		
+		User user = new User();
+		user.setId(id);
+		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());		
+		model.addAttribute("user", user);
+		return "item-info";
+	}
+	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
+	public String itemInfoPost(Locale locale, Model model, Item item, @RequestParam(value="id", required=false) int id) {
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		
+		User user = new User();
+		user.setId(id);
 		try {
-			model.addAttribute("results", itemService.getItemInfoByName(session, "hummus", itemService.getKey()));
-		} catch (UnsupportedEncodingException e) {
+			itemDao.deleteIngredient(item, user);
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}			
+		}
+		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());		
+		model.addAttribute("user", user);
+		
 		return "item-info";
 	}
 	
-	@RequestMapping(value = "/item/{upc}", method = RequestMethod.GET)
+	@RequestMapping(value = "/item-info/{upc}", method = RequestMethod.GET)
 	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String upc) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		
-		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));
+		model.addAttribute("ingredient", itemService.getItemInfoByUPC(upc));
 		return "allergens";
 	}
 	
@@ -112,7 +127,7 @@ public class ItemController {
 		String session = itemService.getSession();
 		try {
 			
-			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+			model.addAttribute("results", itemService.getItemInfoByName(session, "fish", itemService.getKey()));
 			item.setParticipantID(id);
 			itemDao.addIngredient(user, item);
 			model.addAttribute("id", id) ;
@@ -124,10 +139,6 @@ public class ItemController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-
-		
-
-		
 		return "item";
 	}
 	
@@ -137,7 +148,7 @@ public class ItemController {
 		String session = itemService.getSession();
 		try {
 			
-			model.addAttribute("results", itemService.getItemInfoByName(session, searchTerms, itemService.getKey()));
+			model.addAttribute("results", itemService.getItemInfoByName(session, "fish", itemService.getKey()));
 			item.setParticipantID(id);
 			itemDao.addIngredient(user, item);
 			model.addAttribute("id", id) ;
@@ -150,9 +161,6 @@ public class ItemController {
 			e.printStackTrace();
 		}		
 
-		
-
-		
 		return "item";
 	}
 	

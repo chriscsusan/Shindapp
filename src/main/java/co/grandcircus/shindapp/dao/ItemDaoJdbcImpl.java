@@ -82,14 +82,14 @@ public class ItemDaoJdbcImpl implements ItemDao {
 	}
 
 	@Override
-	public void deleteIngredient(int ingredientIndex, Item item, User user) throws FileNotFoundException {
-		String sql = "DELETE FROM Ingredients WHERE ParticipantID = ?, Ingredient = ?";
+	public void deleteIngredient(Item item, User user) throws FileNotFoundException {
+		String sql = "DELETE FROM Ingredients WHERE ParticipantID = ? and Ingredient = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 
 			statement.setInt(1, user.getId());
 
-			statement.setString(2, item.getIngredients().get(ingredientIndex));
+			statement.setString(2, item.getFoodName());
 
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
