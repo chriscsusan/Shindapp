@@ -106,11 +106,11 @@ public class ItemController {
 		return "item-info";
 	}
 	
-	@RequestMapping(value = "/item-info/{upc}", method = RequestMethod.GET)
+	@RequestMapping(value = "/allergens/{upc}", method = RequestMethod.GET)
 	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String upc) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		
-		model.addAttribute("ingredient", itemService.getItemInfoByUPC(upc));
+		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));
 		return "allergens";
 	}
 	

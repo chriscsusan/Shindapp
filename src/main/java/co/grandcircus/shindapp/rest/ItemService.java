@@ -14,6 +14,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.lang3.*;
+import org.apache.commons.lang3.text.WordUtils;
 
 import co.grandcircus.shindapp.model.Allergen;
 import co.grandcircus.shindapp.model.Item;
@@ -83,7 +85,7 @@ public class ItemService {
 			for (JsonElement e: temp){
 				Item tempItem = new Item();
 				tempItem.setUpc(e.getAsJsonObject().get("upc").getAsString());
-				tempItem.setFoodName(e.getAsJsonObject().get("product_name").getAsString());
+				tempItem.setFoodName(WordUtils.capitalizeFully((e.getAsJsonObject().get("product_name").getAsString())));
 				tempItem.setId(i);
 				results.add(tempItem);
 				i++;
