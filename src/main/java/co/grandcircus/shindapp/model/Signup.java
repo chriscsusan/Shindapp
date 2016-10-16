@@ -6,10 +6,13 @@ public class Signup {
 	private String lastName;
 	private String phoneNumber;
 	private String dishName;
+	private int id;
 	
 	
 	
-	
+	public int getId() {
+		return id;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -18,6 +21,16 @@ public class Signup {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public Signup(String firstName, String lastName, String phoneNumber, String dishName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.dishName = dishName;
+	}
+	public Signup() {
+		// TODO Auto-generated constructor stub
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
@@ -34,6 +47,13 @@ public class Signup {
 	public String getDishName() {
 		return dishName;
 	}
+	public void setId(int id) {
+		this.id =id;
+		
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	
 	

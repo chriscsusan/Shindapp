@@ -8,11 +8,7 @@
 <body background="https://images4.alphacoders.com/128/128796.jpg">
 	<h1>Welcome!</h1>
 	
-	<!--  <a href="<c:url value="/sign-up"/>">Sign Up</a> -->
-	<br />
-	
-	
-		<fieldset>
+	<a href="<c:url value="/sign-up"/>">Sign Up</a>
 		<legend>Register</legend>
 		
 	<form method="get" action="shindapphome">

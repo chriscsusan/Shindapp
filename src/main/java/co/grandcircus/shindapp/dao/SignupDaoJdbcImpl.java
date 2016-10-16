@@ -1,6 +1,7 @@
 package co.grandcircus.shindapp.dao;
 
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.Signup;
+import co.grandcircus.shindapp.model.User;
 
 
 
@@ -33,19 +36,20 @@ import co.grandcircus.shindapp.model.Signup;
 
 		@Override
 		public List<Signup> getAllSignup() {
-			String sql = "SELECT * FROM ebdb.signup";
+			String sql = "SELECT * FROM signup";
 			try (Connection connection = connectionFactory.getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql)) {
 				List<Signup> signup = new ArrayList<Signup>();
-				List<Signup> signup;
 				while (result.next()) {
 					String firstName = result.getString("firstname");
 					String  lastName= result.getString("lastname");
 					String phoneNumber = result.getString("phonenumber");
 					String dishName = result.getString("dishName");
 					
-					signup.add(new Signup(firstName,lastName,phoneNumber,dishName));
+					Signup temp = new Signup(firstName,lastName,phoneNumber,dishName);
+					temp.setId(result.getInt("id"));		
+					signup.add(temp);
 					
 				}
 				return signup;
@@ -58,10 +62,10 @@ import co.grandcircus.shindapp.model.Signup;
 					
 				
 		@Override
-		public String addSignup(Signup signup) {
-			String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName) VALUES (?, ?)";
+		public void addSignup(Signup signup) {
+			String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName) VALUES (?, ?,?,?)";
 			try (Connection connection = connectionFactory.getConnection();
-					PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+					PreparedStatement statement = connection.prepareStatement(sql)) {
 
 				
 				
@@ -75,20 +79,22 @@ import co.grandcircus.shindapp.model.Signup;
 					throw new SQLException("Creating user failed, no rows affected.");
 				}
 
-				try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-					if (generatedKeys.next()) {
-						signup.setFirstName(generatedKeys.getString(1));
-					} else {
-						throw new SQLException("Creating user failed, no ID obtained.");
-					}
-				}
+				//try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+				//	if (generatedKeys.next()) {
+				//		signup.setFirstName(generatedKeys.getString(1));
+					//} else {
+					//	throw new SQLException("Creating user failed, no ID obtained.");
+					//}
+				//}
 
-				return signup.getFirstName();
-			} catch (SQLException ex) {
+				
+			} 
+			catch (SQLException ex) {
 				throw new RuntimeException(ex);
 			}
-
-			public void updateSignup(String firstName, Signup signup) throws NamingException {
+		}
+		@Override	
+		public void updateSignup(Signup signup) throws NamingException {
 				String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
 				try (Connection conn = connectionFactory.getConnection();
 						PreparedStatement statement = conn
@@ -98,7 +104,7 @@ import co.grandcircus.shindapp.model.Signup;
 					statement.setString(2, signup.getLastName());
 					statement.setString(3, signup.getPhoneNumber());
 					statement.setString(4, signup.getDishName());
-					
+					statement.setInt(5, signup.getId());
 
 					int rowsUpdated = statement.executeUpdate();
 					if (rowsUpdated != 1) {
@@ -109,11 +115,11 @@ import co.grandcircus.shindapp.model.Signup;
 				}
 			}
 			@Override
-			public Signup getSignup(String firstName) throws NameNotFoundException {
-				String sql = "SELECT * FROM Signup WHERE firstname = ?";
+			public Signup getSignup(int id) throws NameNotFoundException {
+				String sql = "SELECT * FROM signup WHERE id = ?";
 				try (Connection connection = connectionFactory.getConnection();
 						PreparedStatement statement = connection.prepareStatement(sql)) {
-					statement.setString(1, firstName);
+					statement.setInt(1, id);
 					ResultSet result = statement.executeQuery();
 
 					if (result.next()) {
@@ -123,10 +129,28 @@ import co.grandcircus.shindapp.model.Signup;
 						String phonenumber = result.getString("phonenumber");
 						String dishname = result.getString("dishname");
 
-
-						return new (firstname, lastname, phonenumber, dishname);
+						Signup temp = new Signup (firstname, lastname, phonenumber, dishname);
+						temp.setId(id);
+						return temp;
 					} else {
-						throw new NotFoundException("No such user.");
+						throw new NameNotFoundException("No such user.");
+					}
+				} catch (SQLException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+			@Override
+			public void deleteSignup(int id) throws FileNotFoundException {
+				String sql = "DELETE FROM signup WHERE ID = ?";
+				try (Connection conn = connectionFactory.getConnection();
+						PreparedStatement statement = conn.prepareStatement(sql)) {
+
+					statement.setInt(1, id);
+
+					
+					int rowsUpdated = statement.executeUpdate();
+					if (rowsUpdated != 1) {
+						throw new FileNotFoundException("No such user");
 					}
 				} catch (SQLException ex) {
 					throw new RuntimeException(ex);

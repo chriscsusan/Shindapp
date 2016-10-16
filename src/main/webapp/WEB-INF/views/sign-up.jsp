@@ -7,11 +7,10 @@
 <a href="<c:url value="/"/>">Home</a>
 <body background = "https://images4.alphacoders.com/128/128796.jpg">
 	<h1>Create an account:</h1>
-	<form id='register' action='register.php' method='post'
-    accept-charset='UTF-8'>
+	<form method='post'>
 <fieldset >
 <legend>Register</legend>
-<input type='hidden' name='submitted' id='submitted' value='1'/>
+
 
 <label for='name' >First Name*: </label>
 <input type="text" name="firstName" value="${signup.firstName}"/>
@@ -28,5 +27,18 @@
 
 <input type='submit' name='Submit' value='Submit' />
  
+ 
+ 
 </fieldset>
 </form>
+<form method="post" action="<c:url value="/sign-up/${signup.id}/delete"/>">
+	<button type="submit">Delete</button>
+</form>
+<table>
+<c:forEach var="user" items="${list}" >
+		<tr>
+			<td><a href="<c:url value="/sign-up/${user.id}"/>"><c:out value="${ user.firstName }"/></a></td>
+			<td><c:out value="${ user.dishName }"/> </td>
+		</tr>
+	</c:forEach>
+</table>
