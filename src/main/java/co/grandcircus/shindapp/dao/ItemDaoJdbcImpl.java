@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import co.grandcircus.shindapp.model.Ingredient;
 import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.User;
 
@@ -33,8 +34,8 @@ public class ItemDaoJdbcImpl implements ItemDao {
 	@Override
 	public Item getAllIngredients(User user) {
 		String sql = "SELECT * FROM Ingredients WHERE ParticipantID = ?";
-		List<String> items = new ArrayList<String>();
-		List<String> tempItems = new ArrayList<String>();
+		List<Ingredient> items = new ArrayList<>();
+		List<Ingredient> tempItems = new ArrayList<>();
 		List<User> users = new ArrayList<User>();
 		Integer id = user.getId();
 		Item item = new Item();
@@ -46,13 +47,16 @@ public class ItemDaoJdbcImpl implements ItemDao {
 
 			
 			while (result.next())  {
-				items.add(result.getString("Ingredient"));
+				Ingredient temp = new Ingredient();
+				temp.setName(result.getString("Ingredient"));
+				temp.setUpc(result.getString("upc"));
+				items.add(temp);
 
 			}
 			
 			item.setParticipantID(id);
-			for(String s:items){
-				tempItems.add(s);
+			for(Ingredient i:items){
+				tempItems.add(i);
 			}
 			item.setIngredients(tempItems);
 			return item;
@@ -66,11 +70,13 @@ public class ItemDaoJdbcImpl implements ItemDao {
 
 	@Override
 	public void addIngredient(User user, Item item) throws FileNotFoundException {
-		String sql = "INSERT INTO Ingredients SET participantID = ?, Ingredient = ?";
+		String sql = "INSERT INTO Ingredients (participantID, Ingredient, upc) VALUES (?, ?, ?)";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 			statement.setInt(1, user.getId());
 			statement.setString(2, item.getFoodName());
+			statement.setString(3, item.getUpc());
+			
 
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
