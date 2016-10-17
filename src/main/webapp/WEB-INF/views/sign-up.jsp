@@ -25,7 +25,10 @@ background="http://cdn.skim.gs/images/c_fill,dpr_1.0,h_391,w_695/hogwarts_accept
 				for='dish'>Dish name*:</label> <input type="text" name="dishName"
 				value="${signup.dishName}" /> <input type='submit' name='Submit'
 				value='Submit' />
-
+<label method="post"
+		action="<c:url value="/sign-up/${signup.id}/delete"/>">
+		<button type="submit">Delete</button>
+	</label>
 
 
 		</fieldset>
