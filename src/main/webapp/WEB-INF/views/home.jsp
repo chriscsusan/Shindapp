@@ -7,7 +7,7 @@
 </head>
 <body background="https://images4.alphacoders.com/128/128796.jpg">
 	<h1>Welcome!</h1>
-	
+	<a href="<c:url value="/test"/>">Test</a>
 	<a href="<c:url value="/sign-up"/>">Sign Up</a>
 		<legend>Register</legend>
 		
