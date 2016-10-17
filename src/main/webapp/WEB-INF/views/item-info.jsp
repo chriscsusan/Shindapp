@@ -17,13 +17,14 @@
 			<input type = "hidden" name = "id" value = "${user.id}">
 		</c:forEach>
 	</form>	
-		<h1>Item Search</h1>
+		<h1>Ingredient Search</h1>
 
 
-	<form method=get action="<c:url value="/item?q=${searchTerms}&id=${id}"/>">
+	<form method=get action="<c:url value="/item?q=${searchTerms}&id=${id}$start=${start}"/>">
 	<div>
-		<label>Search for food item:</label><input type="text" name="q" value="">
+		<label>Search for ingredient:</label><input type="text" name="q" value="">
 		<input type="hidden" name="id" value="${user.id}">
+		<input type="hidden" name="start" value="${start}">
 	</div>
 	<button type="submit">Search</button>
 	</form>

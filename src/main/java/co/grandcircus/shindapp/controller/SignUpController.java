@@ -41,7 +41,7 @@ public class SignUpController {
 		model.addAttribute("list", signupDao.getAllSignup());
 		signupDao.addSignup(signup);
 		System.out.println("/signup -> sign-up.jsp");
-		return "sign-up";
+		return "redirect:/sign-up";
 	}
 
 	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.POST)

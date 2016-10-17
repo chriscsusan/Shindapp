@@ -6,21 +6,20 @@
 </head>
 <a href="<c:url value="/"/>">Home</a>
 <body>
-	<h1>Item List</h1>
-
+	<h1>Ingredient List</h1>
 
 	<P>The results for</P>
 	
 		<c:forEach var="result" items="${results}">
 		<form method=POST>
-			<li><a href="<c:url value="/allergens/${result.upc}"/>">
+			<a href="<c:url value="/allergens/${result.upc}"/>">
 			<c:out value="${ result.foodName }" />:</a>
 			<input type = "hidden" name = "id" value = "${id}">
 			<input type = "hidden" name = "upc" value = "${result.upc}">
 			<button name= "foodName" type="submit" value="${result.foodName}"> Add</button>
 		</form>
 		</c:forEach>
-	
+	<a href="<c:url value="/item?q=${searchTerms}&id=${id}&start=${ start-10 }"/>">Previous page</a>-<a href="<c:url value="/item?q=${searchTerms}&id=${id}&start=${ start+10 }"/>">Next page</a>
 
 </body>
 </html>

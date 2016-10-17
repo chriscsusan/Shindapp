@@ -25,8 +25,6 @@ import co.grandcircus.shindapp.rest.HttpHelper;
 @Service
 public class ItemService {
 	
-	//private final static String API_KEY = "yqtv5hue36h96ww6qdtv3dvc";
-	//private final static String TEST_SESSION = "10aef9ce-5e01-44a3-a710-ad640d2a1642";
 	private final static String APP_ID = "potluck";
 	
 	@Value("${api_key}")
@@ -36,7 +34,6 @@ public class ItemService {
 	private String testSession;
 	
 	public ItemService(){
-		
 	}
 	
 	public String getKey(){
@@ -50,27 +47,71 @@ public class ItemService {
 		return testSession;
 	}
 	
-//	public ItemSession getSession() {
-//		String url = "http://api.foodessentials.com/createsession?uid=ert&devid=ert&appid=" + APP_ID + "&f=json&v=2.00&api_key=" + apiKey;
-//		// Use HTTP GET with the above URL
-//		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
-//			if (reader == null) {
-//				throw new RuntimeException("Not found: " + url);
-//			}
-//			ItemSession itemSession = new ItemSession();
-//			JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
-//			itemSession.setSession(root.get("session_id").getAsString());
-//			System.out.println(itemSession.getSession());
-//						
-//			return itemSession;
-//		} catch (IOException ex) {
-//			throw new RuntimeException("Error reading from URL: " + url, ex);
-//		}
-//	}
+	//Get first 50 results of an item search from API 
 	public ArrayList<Item> getItemInfoByName(String session, String itemName, String key) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
 		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
-		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + testSession + "&n=5&s=1&f=json&v=2.00&api_key=" + apiKey;
+		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + testSession + "&n=50&s=1&f=json&v=2.00&api_key=" + apiKey;
+		
+		
+		// Use HTTP GET with the above URL
+		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
+			if (reader == null) {
+				throw new RuntimeException("Not found: " + url);
+			}
+			
+			JsonElement root = new JsonParser().parse(reader);
+			JsonArray temp = root.getAsJsonObject().get("productsArray").getAsJsonArray();
+			Integer i = 1;
+			for (JsonElement e: temp){
+				Item tempItem = new Item();
+				tempItem.setUpc(e.getAsJsonObject().get("upc").getAsString());
+				tempItem.setFoodName(WordUtils.capitalizeFully((e.getAsJsonObject().get("product_name").getAsString())));
+				tempItem.setId(i);
+				results.add(tempItem);
+				i++;
+			}
+						
+			return results;
+		} catch (IOException ex) {
+			throw new RuntimeException("Error reading from URL: " + url, ex);
+		}
+	}
+	
+	public ArrayList<Item> getItemInfoByNameTenResults(String session, String itemName, String key) throws UnsupportedEncodingException {
+		ArrayList<Item> results = new ArrayList<>();
+		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
+		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + testSession + "&n=10&s=1&f=json&v=2.00&api_key=" + apiKey;
+		
+		
+		// Use HTTP GET with the above URL
+		try (BufferedReader reader = HttpHelper.doGet(url)) { // try with resources will auto close the reader
+			if (reader == null) {
+				throw new RuntimeException("Not found: " + url);
+			}
+			
+			JsonElement root = new JsonParser().parse(reader);
+			JsonArray temp = root.getAsJsonObject().get("productsArray").getAsJsonArray();
+			Integer i = 1;
+			for (JsonElement e: temp){
+				Item tempItem = new Item();
+				tempItem.setUpc(e.getAsJsonObject().get("upc").getAsString());
+				tempItem.setFoodName(WordUtils.capitalizeFully((e.getAsJsonObject().get("product_name").getAsString())));
+				tempItem.setId(i);
+				results.add(tempItem);
+				i++;
+			}
+						
+			return results;
+		} catch (IOException ex) {
+			throw new RuntimeException("Error reading from URL: " + url, ex);
+		}
+	}
+	
+	public ArrayList<Item> getItemInfoByNameNextTenResults(String session, String itemName, String key, int searchStart) throws UnsupportedEncodingException {
+		ArrayList<Item> results = new ArrayList<>();
+		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
+		String url = "http://api.foodessentials.com/searchprods?q=" + encodedItemName + "&sid=" + testSession + "&n=10&s=" + searchStart + "&f=json&v=2.00&api_key=" + apiKey;
 		
 		
 		// Use HTTP GET with the above URL

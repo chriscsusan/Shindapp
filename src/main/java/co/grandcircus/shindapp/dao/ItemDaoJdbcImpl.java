@@ -55,10 +55,10 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			}
 			
 			item.setParticipantID(id);
-			for(Ingredient i:items){
-				tempItems.add(i);
-			}
-			item.setIngredients(tempItems);
+//			for(Ingredient i:items){
+//				tempItems.add(i);
+//			}
+			item.setIngredients(items);
 			return item;
 		}catch(
 

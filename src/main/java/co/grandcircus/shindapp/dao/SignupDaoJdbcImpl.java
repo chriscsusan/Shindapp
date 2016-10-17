@@ -63,17 +63,21 @@ import co.grandcircus.shindapp.model.User;
 				
 		@Override
 		public void addSignup(Signup signup) {
-			String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName) VALUES (?, ?,?,?)";
+			String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin) VALUES (?, ?, ?, ?, ?)";
 			try (Connection connection = connectionFactory.getConnection();
 					PreparedStatement statement = connection.prepareStatement(sql)) {
 
-				
+				int rand = (int) (Math.random()*1000);
+				if (rand < 100){
+					rand += 100;
+				}
 				
 				statement.setString(1, signup.getFirstName());
 				statement.setString(2, signup.getLastName());
 				statement.setString(3, signup.getPhoneNumber());
 				statement.setString(4, signup.getDishName());
-
+				statement.setInt(5, rand);
+				
 				int affectedRows = statement.executeUpdate();
 				if (affectedRows == 0) {
 					throw new SQLException("Creating user failed, no rows affected.");

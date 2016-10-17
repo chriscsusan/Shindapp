@@ -39,16 +39,20 @@ public class ItemController {
 	private String testSession;
 	
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
-	public String participantList(User user, Item item, Locale locale, Model model, @RequestParam(value="q", required=false) String searchTerms, @RequestParam(value="id", required=true) int id) {
+	public String participantList(User user, Item item, Locale locale, Model model, @RequestParam(value="q", required=false) String searchTerms, @RequestParam(value="id", required=true) int id, @RequestParam(value="start", required=true) int start) {
 		//logger.info("Welcome home! The client locale is {}.", locale);
-		
+
 		try {
 			item.setParticipantID(id);
-			if(searchTerms==null){
+			if(start==1){
+				model.addAttribute("results", itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
 				
 			}
-			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, itemService.getKey()));
-		
+			model.addAttribute("results", itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
+			model.addAttribute("searchTerms", searchTerms);
+			model.addAttribute("id", id);
+			model.addAttribute("start", start);
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +66,7 @@ public class ItemController {
 		
 		try {
 
-			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
+			model.addAttribute("results", itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
 			itemDao.addIngredient(user, item);
 			
 		} catch (UnsupportedEncodingException e) {
@@ -88,6 +92,7 @@ public class ItemController {
 		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());		
 		model.addAttribute("user", user);
 		model.addAttribute("item", item);
+		model.addAttribute("start", 1);
 		return "item-info";
 	}
 	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
