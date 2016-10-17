@@ -6,7 +6,7 @@ import java.util.List;
 public class Item {
 
 	private String foodName;
-	private List <String> ingredients;
+	private List <Ingredient> ingredients;
 	private String whoIsBringingFood;
 	private ArrayList <String> allergens;
 	private String upc;
@@ -26,10 +26,10 @@ public class Item {
 	public void setParticipantID(Integer participantID) {
 		this.participantID = participantID;
 	}
-	public List<String> getIngredients() {
+	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
-	public void setIngredients(List<String> ingredients) {
+	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 	public ArrayList<String> getAllergens() {
