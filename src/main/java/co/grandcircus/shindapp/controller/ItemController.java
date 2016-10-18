@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import co.grandcircus.shindapp.dao.ItemDao;
 import co.grandcircus.shindapp.dao.SignupDao;
 import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.ItemSession;
+import co.grandcircus.shindapp.model.Signup;
 import co.grandcircus.shindapp.model.User;
 //import co.grandcircus.shindapp.rest.ItemService;
 import co.grandcircus.shindapp.rest.*;
@@ -115,15 +117,25 @@ public class ItemController {
 
 	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
 	public String itemInfoPost(Locale locale, Model model, Item item,
-			@RequestParam(value = "id", required = true) int id) {
+			@RequestParam(value = "id", required = true) int id, Signup signup) {
 
 		User user = new User();
 		user.setId(id);
+		
+		
+		try {
+			signupDao.updateSignup(signup);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("/item-info POST");
 		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
 		model.addAttribute("user", user);
 		model.addAttribute("id", id);
-		return "item-info";
+		String returnStatement = "redirect:/item-info?id=";
+		returnStatement += id;
+		return returnStatement;
 	}
 
 	@RequestMapping(value = "/allergens/{upc}", method = RequestMethod.GET)
