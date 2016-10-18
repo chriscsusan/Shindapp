@@ -152,6 +152,8 @@ public class ItemService {
 			for (JsonElement e: allergensArray){
 				if(e.getAsJsonObject().get("allergen_value").getAsInt() > 0){
 					allergens.add(new Allergen(e.getAsJsonObject().get("allergen_name").getAsString(), e.getAsJsonObject().get("allergen_value").getAsString()));
+				}else{
+					allergens.add(new Allergen("none",""));
 				}
 			}
 			

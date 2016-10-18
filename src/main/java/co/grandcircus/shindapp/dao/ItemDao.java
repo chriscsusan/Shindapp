@@ -1,21 +1,24 @@
 package co.grandcircus.shindapp.dao;
 
+import co.grandcircus.shindapp.model.Allergen;
 import co.grandcircus.shindapp.model.Item;
+import co.grandcircus.shindapp.model.Signup;
 import co.grandcircus.shindapp.model.User;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public interface ItemDao {
 
-	public Item getAllIngredients(User user);
+	public void addIngredient(User user, Item item) throws FileNotFoundException;
 
-	//void deleteIngredient(int ingredientIndex, Item item, User user) throws FileNotFoundException;
+	public void deleteIngredient(Item item, User user) throws FileNotFoundException;
 
-	//void addIngredient(Item item, User user, int ingredientIndex) throws FileNotFoundException;
+	public Item getAllIngredients(Signup user);
 
-	//void addIngredient(User user, int ingredientIndex) throws FileNotFoundException;
+	public void addAllergens(Item item, ArrayList<Allergen> allergens) throws FileNotFoundException;
 
-	void addIngredient(User user, Item item) throws FileNotFoundException;
+	public void deleteAllergen(Item item) throws FileNotFoundException;
 
-	void deleteIngredient(Item item, User user) throws FileNotFoundException;
+	public int[] getAllergens(Signup signup) throws FileNotFoundException;
 	
 }

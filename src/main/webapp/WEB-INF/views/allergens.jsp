@@ -11,7 +11,7 @@
 
 	<P>The allergens are </P>
 		<c:forEach var="allergen" items="${allergens}" >
-			<li><c:out value="${ allergen.name }"/>
+			<li><c:out value="${ allergen}"/>
 	</c:forEach>
 	
 </body>

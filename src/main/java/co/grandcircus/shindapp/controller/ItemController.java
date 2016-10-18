@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import co.grandcircus.shindapp.dao.ItemDao;
 import co.grandcircus.shindapp.dao.SignupDao;
+import co.grandcircus.shindapp.model.Allergen;
 import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.ItemSession;
 import co.grandcircus.shindapp.model.Signup;
@@ -98,7 +99,7 @@ public class ItemController {
 	@RequestMapping(value = "/item-info", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model, Item item, @RequestParam(value = "id", required = true) int id) {
 
-		User user = new User();
+		Signup user = new Signup();
 		user.setId(id);
 		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
 		model.addAttribute("user", user);
@@ -117,9 +118,22 @@ public class ItemController {
 
 	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
 	public String itemInfoPost(Locale locale, Model model, Item item,
-			@RequestParam(value = "id", required = true) int id, Signup signup) {
-
-		User user = new User();
+			@RequestParam(value = "id", required = true) int id, Signup signup, @RequestParam(value = "pin", required = false) String pin) {
+		
+		boolean pinCorrect = false;
+		if(pin != null){
+			try {
+				if(signupDao.getSignupPin(id)==Integer.parseInt(pin)){
+					pinCorrect = true;
+				}
+			} catch (NumberFormatException | NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			pinCorrect = false;
+		}
+		model.addAttribute("isPatricipant", pinCorrect);
+		Signup user = new Signup();
 		user.setId(id);
 		
 		
@@ -138,16 +152,23 @@ public class ItemController {
 		return returnStatement;
 	}
 
-	@RequestMapping(value = "/allergens/{upc}", method = RequestMethod.GET)
-	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String upc) {
-		// logger.info("Welcome home! The client locale is {}.", locale);
-
-		model.addAttribute("allergens", itemService.getItemInfoByUPC(upc));
+	@RequestMapping(value = "/allergens/{id}", method = RequestMethod.GET)
+	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String id) {
+		try {
+		Signup signup = new Signup();
+		signup.setId(Integer.parseInt(id));
+		
+		
+			model.addAttribute("allergens", itemDao.getAllergens(signup));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "allergens";
 	}
 
 	@RequestMapping(value = "/item-search", method = RequestMethod.GET)
-	public String itemSearchGet(Item item, User user, Locale locale, Model model,
+	public String itemSearchGet(Item item, Signup user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
 			@RequestParam(value = "start", required = true) int start, @RequestParam(value = "id", required = true) int id) {
 		try {
@@ -181,15 +202,15 @@ public class ItemController {
 	public String itemSearchPost(Item item, User user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
 			@RequestParam(value = "start", required = true) int start, @RequestParam(value = "id", required = true) int id) {
-		try {
+//		try {
 			item.setParticipantID(id);
-			if (start == 1) {
-				model.addAttribute("results",
-						itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
-
-			}
-			model.addAttribute("results",
-					itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
+//			if (start == 1) {
+//				model.addAttribute("results",
+//						itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
+//
+//			}
+			//model.addAttribute("results",
+			//		itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
 			model.addAttribute("searchTerms", searchTerms);
 			model.addAttribute("id", id);
 			model.addAttribute("start", start);
@@ -200,12 +221,13 @@ public class ItemController {
 				e.printStackTrace();
 			}
 
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		try {
 			itemDao.addIngredient(user, item);
+			itemDao.addAllergens(item, itemService.getItemInfoByUPC(item.getUpc()));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,9 +2,12 @@ package co.grandcircus.shindapp.controller;
 
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import org.slf4j.Logger;
@@ -16,7 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import co.grandcircus.shindapp.dao.ItemDao;
 import co.grandcircus.shindapp.dao.SignupDao;
+import co.grandcircus.shindapp.model.Allergen;
+import co.grandcircus.shindapp.model.Ingredient;
+import co.grandcircus.shindapp.model.Item;
 import co.grandcircus.shindapp.model.Signup;
 
 @Controller
@@ -26,11 +33,29 @@ public class SignUpController {
 
 	@Autowired
 	private SignupDao signupDao;
+	
+	@Autowired
+	private ItemDao itemDao;
 
 	@RequestMapping(value = "/sign-up", method = RequestMethod.GET)
 	public String listSignupView(Model model) {
 		model.addAttribute("list", signupDao.getAllSignup());
 		model.addAttribute("signup", new Signup());
+		List<Item> dishList = new ArrayList<Item>();
+		List<Ingredient> ingredientList = new ArrayList<>();
+		List<ArrayList> listOfDishAllergens = new ArrayList<>();
+		for(Signup signup: signupDao.getAllSignup()){
+			
+			try {
+				signup.setItem(signupDao.getSignup(signup.getId()).getItem());
+				listOfDishAllergens.add(signupDao.getSignup(signup.getId()).getItem().getAllergens());
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		model.addAttribute("allergenList", listOfDishAllergens);
 		System.out.println("/signup -> sign-up.jsp");
 		return "sign-up";
 	}
@@ -86,6 +111,32 @@ public class SignUpController {
 
 		logger.info("GET /sign-up/" + id + " -> sign-up.jsp");
 		return "sign-up";
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/sign-up-test", method = RequestMethod.GET)
+	public String listSignupTestView(Model model) {
+		model.addAttribute("list", signupDao.getAllSignup());
+		model.addAttribute("signup", new Signup());
+		List<Item> dishList = new ArrayList<Item>();
+		List<Ingredient> ingredientList = new ArrayList<>();
+		List<ArrayList> listOfDishAllergens = new ArrayList<>();
+		for(Signup signup: signupDao.getAllSignup()){
+			
+			try {
+				signup.setItem(signupDao.getSignup(signup.getId()).getItem());
+				listOfDishAllergens.add(signupDao.getSignup(signup.getId()).getItem().getAllergens());
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		model.addAttribute("allergenList", listOfDishAllergens);
+		System.out.println("/signup -> sign-up.jsp");
+		return "sign-up-test";
 	}
 
 }

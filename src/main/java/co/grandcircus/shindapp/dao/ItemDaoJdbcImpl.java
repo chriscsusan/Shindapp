@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import co.grandcircus.shindapp.model.Allergen;
 import co.grandcircus.shindapp.model.Ingredient;
 import co.grandcircus.shindapp.model.Item;
+import co.grandcircus.shindapp.model.Signup;
 import co.grandcircus.shindapp.model.User;
 
 @Repository
@@ -32,7 +34,7 @@ public class ItemDaoJdbcImpl implements ItemDao {
 	JdbcConnectionFactory connectionFactory;
 
 	@Override
-	public Item getAllIngredients(User user) {
+	public Item getAllIngredients(Signup user) {
 		String sql = "SELECT * FROM Ingredients WHERE ParticipantID = ?";
 		List<Ingredient> items = new ArrayList<>();
 		List<Ingredient> tempItems = new ArrayList<>();
@@ -87,6 +89,90 @@ public class ItemDaoJdbcImpl implements ItemDao {
 		}
 	}
 
+	@Override
+	public void addAllergens(Item item, ArrayList<Allergen> allergens) throws FileNotFoundException {
+		String sql = "INSERT INTO allergens (participantID, cereals, shellfish, egg, fish, milk, peanuts, sulfites, treenuts, soybean, sesameseeds, gluten, lactose, corn, wheat, coconut, name) "
+				+ "		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try (Connection conn = connectionFactory.getConnection();
+				PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setInt(1, item.getId());
+			int counter = 2;
+			System.out.println(allergens);
+			for (Allergen a:allergens){
+				if(a.getName().equalsIgnoreCase("none")){
+					statement.setInt(counter, 0);
+				}else{
+					statement.setInt(counter, 1);
+				}
+				counter++;
+			}
+			statement.setString(counter, item.getFoodName());
+			int rowsUpdated = statement.executeUpdate();
+			if (rowsUpdated != 1) {
+				throw new FileNotFoundException("No such user");
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	@Override
+	public void deleteAllergen(Item item) throws FileNotFoundException {
+		String sql = "DELETE FROM allergens WHERE ParticipantID = ? and name = ?";
+		try (Connection conn = connectionFactory.getConnection();
+				PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setInt(1, item.getId());
+			statement.setString(2, item.getFoodName());
+			int rowsUpdated = statement.executeUpdate();
+			if (rowsUpdated != 1) {
+				throw new FileNotFoundException("No such user");
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	@Override
+	public int[] getAllergens(Signup signup) throws FileNotFoundException {
+		String sql = "SELECT * FROM allergens WHERE ParticipantID = ?";
+		try (Connection conn = connectionFactory.getConnection();
+				PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setInt(1, signup.getId());
+			
+			ResultSet result = statement.executeQuery();
+			int[] allergensPresent = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+			ArrayList<Integer> allergensTemp = new ArrayList<>();
+			
+			while (result.next())  {
+				allergensTemp.add(result.getInt("cereals"));
+				allergensTemp.add(result.getInt("shellfish"));
+				allergensTemp.add(result.getInt("egg"));
+				allergensTemp.add(result.getInt("fish"));
+				allergensTemp.add(result.getInt("milk"));
+				allergensTemp.add(result.getInt("peanuts"));
+				allergensTemp.add(result.getInt("sulfites"));
+				allergensTemp.add(result.getInt("treenuts"));
+				allergensTemp.add(result.getInt("soybean"));
+				allergensTemp.add(result.getInt("sesameseeds"));
+				allergensTemp.add(result.getInt("gluten"));
+				allergensTemp.add(result.getInt("lactose"));
+				allergensTemp.add(result.getInt("corn"));
+				allergensTemp.add(result.getInt("wheat"));
+				allergensTemp.add(result.getInt("coconut"));
+				for (int i = 0; i < 15; i++){
+					if (allergensTemp.get(i)==1){
+						allergensPresent[i] = 1;
+					}
+				}
+				
+
+			}
+			return allergensPresent;
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
 	@Override
 	public void deleteIngredient(Item item, User user) throws FileNotFoundException {
 		String sql = "DELETE FROM Ingredients WHERE ParticipantID = ? and Ingredient = ?";
