@@ -8,7 +8,8 @@
 <body>
 	
 	
-	<h2>${signupEntry.dishName}: brought by ${signupEntry.firstName} ${signupEntry.lastName}</h2>
+	<h2>${signupEntry.dishName}</h2>
+	<h3>brought by ${signupEntry.firstName} ${signupEntry.lastName}</h3>
 	<h5>Ingredient List</h5>
 	<form method="POST" action="<c:url value="/item-info/${id}/delete"/>">
 	<c:forEach var="ingredient" items="${ingredients}">
