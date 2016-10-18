@@ -6,7 +6,7 @@
 </head>
 <a href="<c:url value="/"/>">Home</a>
 <body>
-	
+	background="http://www.blog.drvikram.com/wp-content/uploads/2015/07/natural-remedies-for-allergy.jpg">
 	
 	<h2>${signupEntry.dishName}</h2>
 	<h3>brought by ${signupEntry.firstName} ${signupEntry.lastName}</h3>

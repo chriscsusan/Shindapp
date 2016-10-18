@@ -10,7 +10,18 @@ public class Signup {
 	private String dishName;
 	private int id;
 	private Item item;
+	private int potluckId;
 	private List<Allergen> allergens;
+	
+	public int getPotluckId() {
+		return potluckId;
+	}
+
+	public void setPotluckId(int potluckId) {
+		this.potluckId = potluckId;
+	}
+
+	
 	public Item getItem() {
 		return item;
 	}
