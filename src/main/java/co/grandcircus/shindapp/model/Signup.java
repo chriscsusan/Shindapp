@@ -1,5 +1,7 @@
 package co.grandcircus.shindapp.model;
 
+import java.util.List;
+
 public class Signup {
 
 	private String firstName;
@@ -7,6 +9,26 @@ public class Signup {
 	private String phoneNumber;
 	private String dishName;
 	private int id;
+	private Item item;
+	private int potluckId;
+	private List<Allergen> allergens;
+	
+	public int getPotluckId() {
+		return potluckId;
+	}
+
+	public void setPotluckId(int potluckId) {
+		this.potluckId = potluckId;
+	}
+
+	
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
 
 	public int getId() {
 		return id;

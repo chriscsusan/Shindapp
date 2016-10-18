@@ -58,7 +58,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void addSignup(Signup signup) {
-		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin, potluckId) VALUES (?, ?, ?, ?, ?,?)";
 		try (Connection connection = connectionFactory.getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -72,6 +72,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
 			statement.setInt(5, rand);
+			statement.setInt(6, signup.getPotluckId());
 
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
@@ -95,7 +96,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void updateSignup(Signup signup) throws NamingException {
-		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
+		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ? WHERE potluckid = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 
@@ -104,7 +105,8 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
 			statement.setInt(5, signup.getId());
-
+			statement.setInt(6, signup.getPotluckId());
+			
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
 				throw new NamingException("No name");
@@ -151,6 +153,25 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
 				throw new FileNotFoundException("No such user");
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	@Override
+	public int getSignupPin(int id) throws NameNotFoundException {
+		String sql = "SELECT pin FROM signup WHERE id = ?";
+		try (Connection connection = connectionFactory.getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, id);
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+				int pin = result.getInt("pin");
+				return pin;
+			} else {
+				throw new NameNotFoundException("No such user.");
 			}
 		} catch (SQLException ex) {
 			throw new RuntimeException(ex);
