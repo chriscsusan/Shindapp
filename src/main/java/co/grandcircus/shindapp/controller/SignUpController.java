@@ -89,24 +89,6 @@ public class SignUpController {
 		}
 		return returnStatement;
 	}
-	/*
-	 * Post method that updates the information for a user.
-	 */
-	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.POST)
-	public String saveSignup(@PathVariable int id, Signup signup, Model model) {
-		try {
-			signupDao.updateSignup(signup);
-			model.addAttribute("list", signupDao.getAllSignup());
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		model.addAttribute("id", id);
-
-		logger.info("POST /sign-up/" + id + " -> sign-up.jsp");
-		
-		return "sign-up";
-	}
 
 	/*
 	 * Post method that deletes a user by calling upon the Dao to delete the specified row in the signup table.
@@ -126,23 +108,6 @@ public class SignUpController {
 		return "redirect:/sign-up";
 	}
 
-	/*
-	 * Get method that loads a page for a specific user.
-	 */
-	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.GET)
-	public String getSignup(@PathVariable int id, Signup signup, Model model) {
-		try {
-			model.addAttribute("list", signupDao.getAllSignup());
-			model.addAttribute("signup", signupDao.getSignup(id));
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		model.addAttribute("id", id);
-
-		logger.info("GET /sign-up/" + id + " -> sign-up.jsp");
-		return "sign-up";
-	}
 	
 	/*
 	 * Test method that is not currently being used.
@@ -167,5 +132,42 @@ public class SignUpController {
 		System.out.println("/signup -> sign-up.jsp");
 		return "sign-up-test";
 	}
+	
+	/*
+	 * Get method that loads a page for a specific user.
+	 */
+//	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.GET)
+//	public String getSignup(@PathVariable int id, Signup signup, Model model) {
+//		try {
+//			model.addAttribute("list", signupDao.getAllSignup());
+//			model.addAttribute("signup", signupDao.getSignup(id));
+//		} catch (NamingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		model.addAttribute("id", id);
+//
+//		logger.info("GET /sign-up/" + id + " -> sign-up.jsp");
+//		return "sign-up";
+//	}
+
+	/*
+	 * Post method that updates the information for a user.
+	 */
+//	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.POST)
+//	public String saveSignup(@PathVariable int id, Signup signup, Model model) {
+//		try {
+//			signupDao.updateSignup(signup);
+//			model.addAttribute("list", signupDao.getAllSignup());
+//		} catch (NamingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		model.addAttribute("id", id);
+//
+//		logger.info("POST /sign-up/" + id + " -> sign-up.jsp");
+//		
+//		return "sign-up";
+//	}
 
 }
