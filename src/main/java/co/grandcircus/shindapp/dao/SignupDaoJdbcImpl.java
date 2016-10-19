@@ -25,6 +25,8 @@ import co.grandcircus.shindapp.model.User;
 @Repository
 @Primary
 
+//Methods in this class are used to interact with the signup table in the database.
+
 public class SignupDaoJdbcImpl implements SignupDao {
 	private static final Logger logger = LoggerFactory.getLogger(SignupDao.class);
 
@@ -59,7 +61,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	}
 	/*
-	 * Adds user to db
+	 * Adds user to db using information from form on JSP.
 	 */
 	@Override
 	public void addSignup(Signup signup) {
@@ -85,21 +87,15 @@ public class SignupDaoJdbcImpl implements SignupDao {
 				throw new SQLException("Creating user failed, no rows affected.");
 			}
 
-			// try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-			// if (generatedKeys.next()) {
-			// signup.setFirstName(generatedKeys.getString(1));
-			// } else {
-			// throw new SQLException("Creating user failed, no ID obtained.");
-			// }
-			// }
-
 		} catch (SQLException ex) {
 			throw new RuntimeException(ex);
 
 		}
 
 	}
-
+	/*
+	 * Update user information with the information that is in the form on JSP.
+	 */
 	@Override
 	public void updateSignup(Signup signup) throws NamingException {
 		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
@@ -121,6 +117,9 @@ public class SignupDaoJdbcImpl implements SignupDao {
 		}
 	}
 
+	/*
+	 * Get the information for one specific person from the database using ID.
+	 */
 	@Override
 	public Signup getSignup(int id) throws NameNotFoundException {
 		String sql = "SELECT * FROM signup WHERE id = ?";
@@ -147,6 +146,9 @@ public class SignupDaoJdbcImpl implements SignupDao {
 		}
 	}
 
+	/*
+	 * Get user ID from db based on the rest of their information.
+	 */
 	@Override
 	public int getSignupId(Signup signup) throws NameNotFoundException {
 		String sql = "SELECT * FROM signup WHERE firstName = ? and lastName = ? and phoneNumber = ? and dishName = ?";
@@ -172,6 +174,9 @@ public class SignupDaoJdbcImpl implements SignupDao {
 		}
 	}
 
+	/*
+	 * Delete user signup from db table using ID.
+	 */
 	@Override
 	public void deleteSignup(int id) throws FileNotFoundException {
 		String sql = "DELETE FROM signup WHERE ID = ?";
@@ -189,6 +194,9 @@ public class SignupDaoJdbcImpl implements SignupDao {
 		}
 	}
 	
+	/*
+	 * Get PIN for user for comparison to one entered in form on JSP.
+	 */
 	@Override
 	public int getSignupPin(int id) throws NameNotFoundException {
 		String sql = "SELECT pin FROM signup WHERE id = ?";

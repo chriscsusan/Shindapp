@@ -25,14 +25,15 @@ import co.grandcircus.shindapp.model.User;
 
 @Repository
 @Primary
-public class ItemDaoJdbcImpl implements ItemDao {
 
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(UserDao.class);
+// Methods in this class are used to interact with the dishes and Ingredients tables in the database.
+
+public class ItemDaoJdbcImpl implements ItemDao {
 
 	@Autowired
 	JdbcConnectionFactory connectionFactory;
 
+	// Pulls all ingredients for a specific uer's dish based on ID.
 	@Override
 	public Item getAllIngredients(Signup user) {
 		String sql = "SELECT * FROM Ingredients WHERE ParticipantID = ?";
@@ -41,35 +42,30 @@ public class ItemDaoJdbcImpl implements ItemDao {
 		List<User> users = new ArrayList<User>();
 		Integer id = user.getId();
 		Item item = new Item();
-		
+
 		try (Connection connection = connectionFactory.getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
 
-			
-			while (result.next())  {
+			while (result.next()) {
 				Ingredient temp = new Ingredient();
 				temp.setName(result.getString("Ingredient"));
 				temp.setUpc(result.getString("upc"));
 				items.add(temp);
 
 			}
-			
+
 			item.setParticipantID(id);
-//			for(Ingredient i:items){
-//				tempItems.add(i);
-//			}
 			item.setIngredients(items);
 			return item;
-		}catch(
+		} catch (
 
-	SQLException ex)
-	{
-		throw new RuntimeException(ex);
+		SQLException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
-	}
-
+	//Adds ingredient to Ingredients table with participant ID and upc for future reference.
 	@Override
 	public void addIngredient(User user, Item item) throws FileNotFoundException {
 		String sql = "INSERT INTO Ingredients (participantID, Ingredient, upc) VALUES (?, ?, ?)";
@@ -78,7 +74,6 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			statement.setInt(1, user.getId());
 			statement.setString(2, item.getFoodName());
 			statement.setString(3, item.getUpc());
-			
 
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
@@ -88,7 +83,7 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			throw new RuntimeException(ex);
 		}
 	}
-
+	//Adds allergens from an ingredient to allergens table.  A 1 means the item has that specific allergent present.
 	@Override
 	public void addAllergens(Item item, ArrayList<Allergen> allergens) throws FileNotFoundException {
 		String sql = "INSERT INTO allergens (participantID, cereals, shellfish, egg, fish, milk, peanuts, sulfites, treenuts, soybean, sesameseeds, gluten, lactose, corn, wheat, coconut, name) "
@@ -98,10 +93,10 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			statement.setInt(1, item.getId());
 			int counter = 2;
 			System.out.println(allergens);
-			for (Allergen a:allergens){
-				if(a.getName().equalsIgnoreCase("none")){
+			for (Allergen a : allergens) {
+				if (a.getName().equalsIgnoreCase("none")) {
 					statement.setInt(counter, 0);
-				}else{
+				} else {
 					statement.setInt(counter, 1);
 				}
 				counter++;
@@ -115,7 +110,9 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			throw new RuntimeException(ex);
 		}
 	}
-	
+	//Deletes an allergen from the allergens table, using the participant ID and name.  
+	//This way it doesn't delete an allergen from multiple dishes, in case the participant
+	//is attending multiple potlucks.
 	@Override
 	public void deleteAllergen(Item item) throws FileNotFoundException {
 		String sql = "DELETE FROM allergens WHERE ParticipantID = ? and name = ?";
@@ -131,19 +128,19 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			throw new RuntimeException(ex);
 		}
 	}
-	
+	//Get an array of ints that represents each allergen.  A 1 indicates it is present int he dish.
 	@Override
 	public int[] getAllergens(Signup signup) throws FileNotFoundException {
 		String sql = "SELECT * FROM allergens WHERE ParticipantID = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 			statement.setInt(1, signup.getId());
-			
+
 			ResultSet result = statement.executeQuery();
-			int[] allergensPresent = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+			int[] allergensPresent = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 			ArrayList<Integer> allergensTemp = new ArrayList<>();
-			
-			while (result.next())  {
+
+			while (result.next()) {
 				allergensTemp.add(result.getInt("cereals"));
 				allergensTemp.add(result.getInt("shellfish"));
 				allergensTemp.add(result.getInt("egg"));
@@ -159,12 +156,11 @@ public class ItemDaoJdbcImpl implements ItemDao {
 				allergensTemp.add(result.getInt("corn"));
 				allergensTemp.add(result.getInt("wheat"));
 				allergensTemp.add(result.getInt("coconut"));
-				for (int i = 0; i < 15; i++){
-					if (allergensTemp.get(i)==1){
+				for (int i = 0; i < 15; i++) {
+					if (allergensTemp.get(i) == 1) {
 						allergensPresent[i] = 1;
 					}
 				}
-				
 
 			}
 			return allergensPresent;
@@ -172,7 +168,9 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			throw new RuntimeException(ex);
 		}
 	}
-	
+	//Deletes an ingredient from the Ingredients table, using the participant ID and name.  
+	//This way it doesn't delete an ingredient from multiple dishes, in case the participant
+	//is attending multiple potlucks.
 	@Override
 	public void deleteIngredient(Item item, User user) throws FileNotFoundException {
 		String sql = "DELETE FROM Ingredients WHERE ParticipantID = ? and Ingredient = ?";
@@ -191,7 +189,5 @@ public class ItemDaoJdbcImpl implements ItemDao {
 			throw new RuntimeException(ex);
 		}
 	}
-
-
 
 }
