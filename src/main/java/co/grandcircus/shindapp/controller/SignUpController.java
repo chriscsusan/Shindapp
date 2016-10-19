@@ -37,19 +37,27 @@ public class SignUpController {
 	@Autowired
 	private ItemDao itemDao;
 
+	/*
+	 * Get method which loads the sign-up page, calling on the database to store the information in objects for use by the view.
+	 */
 	@RequestMapping(value = "/sign-up", method = RequestMethod.GET)
 	public String listSignupView(Model model) {
-		model.addAttribute("list", signupDao.getAllSignup());
+		
+		
 		model.addAttribute("signup", new Signup());
-		List<Item> dishList = new ArrayList<Item>();
-		List<Ingredient> ingredientList = new ArrayList<>();
+		
+		List<Signup> signupList = signupDao.getAllSignup();
 		List<int[]> listOfDishAllergens = new ArrayList<>();
-		for(Signup signup: signupDao.getAllSignup()){
+		for(Signup signup: signupList){
 			
 			try {
 				signup.setItem(signupDao.getSignup(signup.getId()).getItem());
 				int[] allergens = itemDao.getAllergens(signup);
 				listOfDishAllergens.add(allergens);
+				signup.setAllergenList(allergens);
+				
+				model.addAttribute("list", signupList);
+				
 			} catch (NameNotFoundException | FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -58,9 +66,13 @@ public class SignUpController {
 		
 		model.addAttribute("allergenList", listOfDishAllergens);
 		System.out.println("/signup -> sign-up.jsp");
+		System.out.println(listOfDishAllergens);
 		return "sign-up";
 	}
 
+	/*
+	 * Post method which adds a new sign-up to the signup table.  The information put into the db table comes from the HTML form in the page.
+	 */
 	@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
 	public String listSignup(Model model, Signup signup) {
 
@@ -69,9 +81,11 @@ public class SignUpController {
 		System.out.println("/signup -> sign-up.jsp");
 		return "redirect:/sign-up";
 	}
-
+	/*
+	 * Post method that updates the information for a user.
+	 */
 	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.POST)
-	public String saveMovie(@PathVariable int id, Signup signup, Model model) {
+	public String saveSignup(@PathVariable int id, Signup signup, Model model) {
 		try {
 			signupDao.updateSignup(signup);
 			model.addAttribute("list", signupDao.getAllSignup());
@@ -85,6 +99,10 @@ public class SignUpController {
 		return "sign-up";
 	}
 
+	/*
+	 * Post method that deletes a user by calling upon the Dao to delete the specified row in the signup table.
+	 */
+	
 	@RequestMapping(value = "/sign-up/{id}/delete", method = RequestMethod.POST)
 	public String deleteMovie(@PathVariable int id, Model model) {
 		try {
@@ -99,6 +117,9 @@ public class SignUpController {
 		return "redirect:/sign-up";
 	}
 
+	/*
+	 * Get method that loads a page for a specific user.
+	 */
 	@RequestMapping(value = "/sign-up/{id}", method = RequestMethod.GET)
 	public String getSignup(@PathVariable int id, Signup signup, Model model) {
 		try {
@@ -114,15 +135,13 @@ public class SignUpController {
 		return "sign-up";
 	}
 	
-	
-	
-	
+	/*
+	 * Test method that is not currently being used.
+	 */
 	@RequestMapping(value = "/sign-up-test", method = RequestMethod.GET)
 	public String listSignupTestView(Model model) {
 		model.addAttribute("list", signupDao.getAllSignup());
 		model.addAttribute("signup", new Signup());
-		List<Item> dishList = new ArrayList<Item>();
-		List<Ingredient> ingredientList = new ArrayList<>();
 		List<ArrayList> listOfDishAllergens = new ArrayList<>();
 		for(Signup signup: signupDao.getAllSignup()){
 			

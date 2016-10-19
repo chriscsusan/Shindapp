@@ -64,8 +64,6 @@ label {
 	color: black;
 	font-weight: bold;
 }
-
-
 </style>
 </head>
 <body>
@@ -100,6 +98,7 @@ label {
 			<th>Last Name</th>
 			<th>Phone Number</th>
 			<th>Dish Name</th>
+			<th>Allergens</th>
 
 		</tr>
 
@@ -111,10 +110,16 @@ label {
 				<td><c:out value="${ user.phoneNumber }" /></td>
 				<td><a href="<c:url value="/item-info?id=${user.id}"/>"><c:out
 							value="${ user.dishName }" /></a></td>
+				<td><c:set var="allergens" value="${user.allergenList}"/> 
+						<c:forEach var="i" items="${allergens}" varStatus="n">
+						<c:if test="${i=='1'}">
+							<img src="resources/${n.index}.jpg">
+						</c:if>
+					</c:forEach></td>
 			</tr>
-			<tr>
+			
 		</c:forEach>
-		</tr>
+		<tr></tr>
 
 	</table>
 </body>

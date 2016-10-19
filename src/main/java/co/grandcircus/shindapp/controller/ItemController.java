@@ -46,6 +46,10 @@ public class ItemController {
 	@Value("${test_session}")
 	private String testSession;
 
+	/*
+	 * Get method loads the item-info page for a specific user.  It takes a url parameter to allow the specific participant
+	 * to be chosen by the id.   
+	 */
 	@RequestMapping(value = "/item-info", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model, Item item, RedirectAttributes redirectAttrs, @RequestParam(value = "id", required = true) int id) {
 
@@ -77,6 +81,13 @@ public class ItemController {
 		return "item-info";
 	}
 
+	/*
+	 * Post method for item-info page that performs multiple functions.  There is an option to unlock edit functionality, and the code to unlock that
+	 * is in this method as well.  It compares the user's PIN from the database to the PIN that is entered in the form.
+	 * If it is correct, it reloads the page with a showAll attribute set to "true."  This value is passed to the search
+	 * results page, so that if it is the next page in the user's navigation, it will still have the showAll attribute
+	 * and the page will function correctly, allowing the user to add an ingredient from the search results to the table.
+	 */
 	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
 	public String itemInfoPost(Locale locale, Model model, Item item, Signup signup,
 			@RequestParam(value = "id", required = true) int id, RedirectAttributes redirectAttrs) {
@@ -104,7 +115,11 @@ public class ItemController {
 		return returnStatement;
 	}
 
-
+	/*
+	 * Get method for the item-search page which queries the API.  It takes the q parameter in the url which is the 
+	 * search terms.  The start parameter is the first result in the list that should be displayed.  The id parameter
+	 * relates the the specific user and is used int he Post method.
+	 */
 	@RequestMapping(value = "/item-search", method = RequestMethod.GET)
 	public String itemSearchGet(Item item, Signup user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
@@ -138,7 +153,11 @@ public class ItemController {
 		System.out.println("/item-search GET");
 		return "item-search";
 	}
-
+	/*
+	 * Post method for item-search page which allows the user to add an ingredient to the dish.
+	 * It adds the ingredient to the table by calling upon the Dao and adding the item to the ingredient table.  It also
+	 * uses a method to add allergen information for the ingredient to another table.  
+	 */
 	@RequestMapping(value = "/item-search", method = RequestMethod.POST)
 	public String itemSearchPost(Item item, User user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
@@ -171,8 +190,10 @@ public class ItemController {
 		return redirect;
 	}
 
-
-
+	/*
+	 * Post method for the delete page.  It uses the ID of the user and calls upon the Dao to delete the
+	 * specified ingredient from db table.
+	 */
 	@RequestMapping(value = "/item-info/{id}/delete", method = RequestMethod.POST)
 	public String deleteIngredient(@PathVariable int id, Model model, User user, Item item) {
 		try {
@@ -190,135 +211,23 @@ public class ItemController {
 
 		return redirect;
 	}
-//	@RequestMapping(value = "/item/{id}", method = RequestMethod.POST)
-//	public String participantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
-//
-//		try {
-//
-//			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
-//			item.setParticipantID(id);
-//			itemDao.addIngredient(user, item);
-//			model.addAttribute("id", id);
-//
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item/id POST");
-//		return "item";
-//	}
+	/*
+	 * Get method for allergens page which displays the array of allergens present for the given dish.
+	 * Dish is chosen by ID.  Page is used for testing purposes only.
+	 */
+	@RequestMapping(value = "/allergens/{id}", method = RequestMethod.GET)
+	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String id) {
+		try {
+			Signup signup = new Signup();
+			signup.setId(Integer.parseInt(id));
 
-//	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
-//	public String getParticipantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
-//		// logger.info("Welcome home! The client locale is {}.", locale);
-//		try {
-//
-//			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
-//			item.setParticipantID(id);
-//			itemDao.addIngredient(user, item);
-//			model.addAttribute("id", id);
-//
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item/id GET");
-//		return "item";
-//	}
-//	@RequestMapping(value = "/item-info/is_participant")
-//	public String itemInfoForParticipant(Locale locale, Model model, Item item,
-//			@RequestParam(value = "id", required = true) int id,
-//			@RequestParam(value = "isParticipant", required = false) int isParticipant) {
-//
-//		Signup user = new Signup();
-//		user.setId(id);
-//		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
-//		model.addAttribute("user", user);
-//		model.addAttribute("item", item);
-//		model.addAttribute("start", 1);
-//		model.addAttribute("id", id);
-//		try {
-//			
-//		
-//		} catch (NameNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item-info/is_participant GET");
-//		String returnStatement = "redirect:/item-info?id=";
-//		returnStatement += id;
-//		return returnStatement;
-//	}
-	
-//	@RequestMapping(value = "/item", method = RequestMethod.GET)
-//	public String participantList(User user, Item item, Locale locale, Model model,
-//			@RequestParam(value = "q", required = false) String searchTerms,
-//			@RequestParam(value = "id", required = true) int id,
-//			@RequestParam(value = "start", required = true) int start) {
-//
-//		try {
-//			item.setParticipantID(id);
-//			if (start == 1) {
-//				model.addAttribute("results",
-//						itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
-//
-//			}
-//			model.addAttribute("results",
-//					itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
-//			model.addAttribute("searchTerms", searchTerms);
-//			model.addAttribute("id", id);
-//			model.addAttribute("start", start);
-//
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item GET");
-//		return "item";
-//	}
-
-//	@RequestMapping(value = "/item", method = RequestMethod.POST)
-//	public String participantListPost(User user, Item item, Model model,
-//			@RequestParam(value = "q", required = false) String searchTerms,
-//			@RequestParam(value = "id", required = true) int id) {
-//
-//		try {
-//
-//			model.addAttribute("results", itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
-//			itemDao.addIngredient(user, item);
-//
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item POST");
-//		String redirect = "redirect:/item-info?id=";
-//		redirect += id;
-//
-//		return redirect;
-//	}
-//	@RequestMapping(value = "/allergens/{id}", method = RequestMethod.GET)
-//	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String id) {
-//		try {
-//			Signup signup = new Signup();
-//			signup.setId(Integer.parseInt(id));
-//
-//			model.addAttribute("allergens", itemDao.getAllergens(signup));
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return "allergens";
-//	}
+			model.addAttribute("allergens", itemDao.getAllergens(signup));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "allergens";
+	}
 
 
 }

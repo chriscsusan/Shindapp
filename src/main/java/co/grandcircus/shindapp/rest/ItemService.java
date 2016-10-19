@@ -77,7 +77,7 @@ public class ItemService {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	
+	//Display first 10 results for a given search.
 	public ArrayList<Item> getItemInfoByNameTenResults(String session, String itemName, String key) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
 		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
@@ -107,7 +107,7 @@ public class ItemService {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	
+	//Get the next 10 items in an API search.
 	public ArrayList<Item> getItemInfoByNameNextTenResults(String session, String itemName, String key, int searchStart) throws UnsupportedEncodingException {
 		ArrayList<Item> results = new ArrayList<>();
 		String encodedItemName = URLEncoder.encode(itemName, "UTF-8");
@@ -137,7 +137,7 @@ public class ItemService {
 			throw new RuntimeException("Error reading from URL: " + url, ex);
 		}
 	}
-	
+	//Gets allergen information for a specific ingredient by using the UPC.
 	public ArrayList<Allergen> getItemInfoByUPC(String upc) {
 		ArrayList<Allergen> allergens = new ArrayList<>();
 		String url = "http://api.foodessentials.com/label?u=" + upc + "&sid=" + testSession + "&appid=" + APP_ID + "&f=json&api_key=" + apiKey;
