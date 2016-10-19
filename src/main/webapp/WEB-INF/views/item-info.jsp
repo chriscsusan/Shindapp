@@ -68,7 +68,7 @@ legend {
 }
 </style>
 </head>
-<a href="<c:url value="/"/>">Home</a>
+<a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>
 <body>
 	<div class="background">
 		<div class="transbox">
