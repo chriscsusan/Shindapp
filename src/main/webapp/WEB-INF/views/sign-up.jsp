@@ -1,9 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <html>
-<a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>
+
+ <a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>
 <head>
 <style>
+
 div.background {
 	background:
 		url(http://calorielab.com/news/wp-images/post-images/allergy-thumbnails.jpg)
@@ -64,9 +66,15 @@ label {
 	color: black;
 	font-weight: bold;
 }
+
+
 </style>
 </head>
+
+
 <body>
+
+
 
 	<div class="background">
 		<div class="transbox">
@@ -90,6 +98,12 @@ label {
 		action="<c:url value="/sign-up/${signup.id}/delete"/>">
 		<button type="submit">Delete</button>
 	</form>
+<div>
+
+<br></br>
+</div>
+
+
 
 	<table>
 

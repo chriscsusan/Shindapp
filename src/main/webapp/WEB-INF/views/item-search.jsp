@@ -63,7 +63,7 @@ div.transbox p {
 		<button type="submit">Delete entry in sign-up table</button>
 	</form>
 </fieldset>
-		<h1>Ingredient Search</h1>
+		<h1>Ingredient Search:</h1>
 
 
 	<form method=get action="<c:url value="/item-search?q=${q}&id=${id}$start=${start}"/>">

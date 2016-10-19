@@ -124,13 +124,13 @@ legend {
 			<button type="submit">Delete entry in sign-up table</button>
 		</form>
 	</fieldset>
-	<h1>Ingredient Search</h1>
+	<h1>Ingredient Search: Make a list of your dish's ingredients one by one to identify if it contains an allegen</h1>
 
 
 	<form method=get
 		action="<c:url value="/item-search?q=${q}&id=${id}$start=${start}"/>">
 		<div>
-			<label>Search for an ingredient:</label><input type="text" name="q"
+			<label>Enter an ingredient:</label><input type="text" name="q"
 				value=""> <input type="hidden" name="id" value="${user.id}">
 			<input type="hidden" name="start" value="${start}">
 		</div>
