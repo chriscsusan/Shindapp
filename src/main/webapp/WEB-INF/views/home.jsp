@@ -1,14 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 
-<<<<<<< Updated upstream
-	
-=======
->>>>>>> Stashed changes
 <html>
 <a href="<c:url value="/sign-up"/>">Sign Up</a>
 <head>
-<<<<<<< Updated upstream
 <style>
 div.background {
 	background:
@@ -106,7 +101,6 @@ label {
 	</table>
 </body>
 
-=======
 <title>Let's Eat </title>
 <link rel="stylesheet" type="text/css" href="resources/home.css">
 </head>
@@ -176,6 +170,6 @@ line-height: 50px;
           }    
 
   </style>
->>>>>>> Stashed changes
+
 </body>
 </html>

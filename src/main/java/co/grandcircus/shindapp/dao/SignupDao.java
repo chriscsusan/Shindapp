@@ -26,5 +26,6 @@ public interface SignupDao {
 	void deleteSignup(int id) throws FileNotFoundException;
 	void updateSignup(Signup signup) throws NamingException;
 	int getSignupPin(int id) throws NameNotFoundException;
+	int getSignupId(Signup signup) throws NameNotFoundException;
 
 }	

@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.grandcircus.shindapp.dao.ItemDao;
 import co.grandcircus.shindapp.dao.SignupDao;
@@ -74,12 +75,19 @@ public class SignUpController {
 	 * Post method which adds a new sign-up to the signup table.  The information put into the db table comes from the HTML form in the page.
 	 */
 	@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-	public String listSignup(Model model, Signup signup) {
+	public String listSignup(Model model, Signup signup, RedirectAttributes redirectAttrs) {
 
 		model.addAttribute("list", signupDao.getAllSignup());
 		signupDao.addSignup(signup);
-		System.out.println("/signup -> sign-up.jsp");
-		return "redirect:/sign-up";
+		redirectAttrs.addFlashAttribute("showAll", true);
+		String returnStatement = "redirect:/item-info?id=";
+		try {
+			returnStatement += signupDao.getSignupId(signup);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnStatement;
 	}
 	/*
 	 * Post method that updates the information for a user.
@@ -96,6 +104,7 @@ public class SignUpController {
 		model.addAttribute("id", id);
 
 		logger.info("POST /sign-up/" + id + " -> sign-up.jsp");
+		
 		return "sign-up";
 	}
 

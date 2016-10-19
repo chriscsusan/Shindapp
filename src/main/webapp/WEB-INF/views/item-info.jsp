@@ -106,6 +106,7 @@ legend {
 	 
 	 <c:if test="${showAll=='true'}">
 	<fieldset>
+	Your pin is: ${ pin }.  Please write this down or remember it.
 		<form method='post'>
 
 			<legend>Sign Up List</legend>

@@ -30,7 +30,10 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Autowired
 	JdbcConnectionFactory connectionFactory;
-
+/*
+ * Creates connection to db, executes query, and stores result in a variable.
+ * While loop iterates through results and takes corresponding user information and adds it to list.
+ */
 	@Override
 	public List<Signup> getAllSignup() {
 		String sql = "SELECT * FROM signup";
@@ -55,10 +58,12 @@ public class SignupDaoJdbcImpl implements SignupDao {
 		}
 
 	}
-
+	/*
+	 * Adds user to db
+	 */
 	@Override
 	public void addSignup(Signup signup) {
-		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin, potluckId, potluckName) VALUES (?, ?, ?, ?, ?,?)";
+		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin) VALUES (?, ?, ?, ?, ?)";
 		try (Connection connection = connectionFactory.getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -72,8 +77,8 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
 			statement.setInt(5, rand);
-			statement.setInt(6, signup.getPotluckId());
-			statement.setString(7, signup.getPotluckName());
+//			statement.setInt(6, signup.getPotluckId());
+//			statement.setString(7, signup.getPotluckName());
 
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
@@ -97,7 +102,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void updateSignup(Signup signup) throws NamingException {
-		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE potluckId = ? WHERE potluckName = ?";
+		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 
@@ -105,10 +110,11 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(2, signup.getLastName());
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
+			statement.setInt(5,  signup.getId());
 			
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
-				throw new NamingException("No name");
+				throw new NamingException("Error");
 			}
 		} catch (SQLException ex) {
 			throw new RuntimeException(ex);
@@ -133,6 +139,31 @@ public class SignupDaoJdbcImpl implements SignupDao {
 				Signup temp = new Signup(firstname, lastname, phonenumber, dishname);
 				temp.setId(id);
 				return temp;
+			} else {
+				throw new NameNotFoundException("No such user.");
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	@Override
+	public int getSignupId(Signup signup) throws NameNotFoundException {
+		String sql = "SELECT * FROM signup WHERE firstName = ? and lastName = ? and phoneNumber = ? and dishName = ?";
+		try (Connection connection = connectionFactory.getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, signup.getFirstName());
+			statement.setString(2, signup.getLastName());
+			statement.setString(3, signup.getPhoneNumber());
+			statement.setString(4, signup.getDishName());
+			
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+
+				int id = result.getInt("id");
+
+				return id;
 			} else {
 				throw new NameNotFoundException("No such user.");
 			}
