@@ -13,7 +13,16 @@ public class Signup {
 	private int potluckId;
 	private List<Allergen> allergens;
 	private int pin;
+	private String potluckName;
 	
+	public String getPotluckName() {
+		return potluckName;
+	}
+
+	public void setPotluckName(String potluckName) {
+		this.potluckName = potluckName;
+	}
+
 	public List<Allergen> getAllergens() {
 		return allergens;
 	}
