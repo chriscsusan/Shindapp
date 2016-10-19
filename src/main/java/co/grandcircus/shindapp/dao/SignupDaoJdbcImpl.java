@@ -58,7 +58,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void addSignup(Signup signup) {
-		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin, potluckId) VALUES (?, ?, ?, ?, ?,?)";
+		String sql = "INSERT INTO signup (firstName,lastName,phoneNumber,dishName, pin, potluckId, potluckName) VALUES (?, ?, ?, ?, ?,?)";
 		try (Connection connection = connectionFactory.getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -73,6 +73,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(4, signup.getDishName());
 			statement.setInt(5, rand);
 			statement.setInt(6, signup.getPotluckId());
+			statement.setString(7, signup.getPotluckName());
 
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
@@ -96,7 +97,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void updateSignup(Signup signup) throws NamingException {
-		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
+		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE potluckId = ? WHERE potluckName = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 
@@ -104,8 +105,6 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(2, signup.getLastName());
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
-			statement.setInt(5, signup.getId());
-			//statement.setInt(6, signup.getPotluckId());
 			
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {
