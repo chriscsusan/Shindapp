@@ -73,7 +73,7 @@ label {
 	<div class="background">
 		<div class="transbox">
 			<p>
-			<form>
+			<form method="post">
 				<label for='name'>First Name*: </label> <input type="text"
 					name="firstName" value="${signup.firstName}" /> <label for='name'>Last
 					Name*:</label> <input type="text" name="lastName"
