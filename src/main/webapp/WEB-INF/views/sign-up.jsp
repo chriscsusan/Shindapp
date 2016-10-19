@@ -6,8 +6,9 @@
 <style>
 div.background {
 	background:
-		url(http://s3.amazonaws.com/spoonuniversi-wpengine/spoonuniversi/wp-content/uploads/sites/184/2016/04/label-reading-food-allergens.jpg)
+		url(http://calorielab.com/news/wp-images/post-images/allergy-thumbnails.jpg)
 		repeat;
+	opacity: 1;
 	border: 2px solid black;
 }
 
@@ -15,8 +16,10 @@ div.transbox {
 	margin: 30px;
 	background-color: #ffffff;
 	border: 1px solid black;
-	opacity: 0.5;
-	filter: alpha(opacity = 60); /* For IE8 and earlier */
+	opacity: 0.8;
+	filter: sepia(opacity = 60);
+	font-weight: bold;
+	/* For IE8 and earlier */
 }
 
 div.transbox p {
@@ -24,9 +27,11 @@ div.transbox p {
 	font-weight: bold;
 	color: #000000;
 }
+
 body {
-  color: Black;
+	color: Black;
 }
+
 table, td, th {
 	border: 1px solid #ddd;
 	text-align: left;
@@ -41,6 +46,26 @@ th, td {
 	padding: 15px;
 }
 
+button {
+	background-color: #FFA500;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+label {
+	font: normal 20px ariel bold !important;
+	color: black;
+	font-weight: bold;
+}
+
+
 </style>
 </head>
 <body>
@@ -48,6 +73,7 @@ th, td {
 	<div class="background">
 		<div class="transbox">
 			<p>
+			<form>
 				<label for='name'>First Name*: </label> <input type="text"
 					name="firstName" value="${signup.firstName}" /> <label for='name'>Last
 					Name*:</label> <input type="text" name="lastName"
@@ -55,12 +81,14 @@ th, td {
 					Number*:</label> <input type="text" name="phoneNumber"
 					value="${signup.phoneNumber}" /> <label for='dish'>Dish
 					name*:</label> <input type="text" name="dishName"
-					value="${signup.dishName}" /> <input type='submit' name='Submit'
-					value='Submit' />
+					value="${signup.dishName}" />
+				<button type='submit' name='Submit' value='Submit'>submit</button>
+
+			</form>
 			</p>
 		</div>
 	</div>
-<form method="post"
+	<form method="post"
 		action="<c:url value="/sign-up/${signup.id}/delete"/>">
 		<button type="submit">Delete</button>
 	</form>
@@ -93,7 +121,7 @@ th, td {
 
 </body>
 </html>
-	
+
 
 <!--   <table>
 <c:forEach var="user" items="${list}" >
@@ -109,4 +137,13 @@ th, td {
 	
 	background="http://www.blog.drvikram.com/wp-content/uploads/2015/07/natural-remedies-for-allergy.jpg">
 	<link href="<c:url value="/resources/sign-up.css"/>" rel="stylesheet"/>
+	
+	fieldset {
+	font-size: 20px;
+}
+
+label:hover, input:hover {
+	font-size: 25px;
+	color: black;
+}
 	 -->

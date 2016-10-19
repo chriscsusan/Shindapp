@@ -3,9 +3,12 @@
 <html>
 <head>
 <title>Home</title>
+
 </head>
 <a href="<c:url value="/"/>">Home</a>
-<body>
+
+<body background="http://images.wisegeek.com/mixed-nuts-on-white-background.jpg" cover>
+
 	<h1>Item List</h1>
 
 
