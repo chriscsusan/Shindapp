@@ -46,57 +46,6 @@ public class ItemController {
 	@Value("${test_session}")
 	private String testSession;
 
-	@RequestMapping(value = "/item", method = RequestMethod.GET)
-	public String participantList(User user, Item item, Locale locale, Model model,
-			@RequestParam(value = "q", required = false) String searchTerms,
-			@RequestParam(value = "id", required = true) int id,
-			@RequestParam(value = "start", required = true) int start) {
-
-		try {
-			item.setParticipantID(id);
-			if (start == 1) {
-				model.addAttribute("results",
-						itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
-
-			}
-			model.addAttribute("results",
-					itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
-			model.addAttribute("searchTerms", searchTerms);
-			model.addAttribute("id", id);
-			model.addAttribute("start", start);
-
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("/item GET");
-		return "item";
-	}
-
-	@RequestMapping(value = "/item", method = RequestMethod.POST)
-	public String participantListPost(User user, Item item, Model model,
-			@RequestParam(value = "q", required = false) String searchTerms,
-			@RequestParam(value = "id", required = true) int id) {
-
-		try {
-
-			model.addAttribute("results", itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
-			itemDao.addIngredient(user, item);
-
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("/item POST");
-		String redirect = "redirect:/item-info?id=";
-		redirect += id;
-
-		return redirect;
-	}
-
 	@RequestMapping(value = "/item-info", method = RequestMethod.GET)
 	public String itemInfo(Locale locale, Model model, Item item, RedirectAttributes redirectAttrs, @RequestParam(value = "id", required = true) int id) {
 
@@ -131,81 +80,39 @@ public class ItemController {
 	@RequestMapping(value = "/item-info", method = RequestMethod.POST)
 	public String itemInfoPost(Locale locale, Model model, Item item, Signup signup,
 			@RequestParam(value = "id", required = true) int id, RedirectAttributes redirectAttrs) {
-
-		boolean pinCorrect = false;
+		Signup user = new Signup();
 		try {
+			signupDao.updateSignup(signup);
 			System.out.println(signup.getPin());
 			System.out.println(signupDao.getSignupPin(id));
+			redirectAttrs.addFlashAttribute("showAll", model.asMap().get("showAll"));
+			model.addAttribute("showAll", model.asMap().get("showAll"));
 			if (signupDao.getSignupPin(id) == signup.getPin()) {
-				pinCorrect = true;
-				signupDao.updateSignup(signup);
-				//model.addAttribute("showAll", true);
 				redirectAttrs.addFlashAttribute("showAll", true);
 			}
 		} catch (NumberFormatException | NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		model.addAttribute("isParticipant", pinCorrect);
-		Signup user = new Signup();
 		user.setId(id);
-		
-		System.out.println("/item-info POST");
 		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
 		model.addAttribute("user", user);
 		model.addAttribute("id", id);
-		
+		System.out.println("/item-info POST");
 		String returnStatement = "redirect:/item-info?id=";
 		returnStatement += id;
 		return returnStatement;
 	}
 
-//	@RequestMapping(value = "/item-info/is_participant")
-//	public String itemInfoForParticipant(Locale locale, Model model, Item item,
-//			@RequestParam(value = "id", required = true) int id,
-//			@RequestParam(value = "isParticipant", required = false) int isParticipant) {
-//
-//		Signup user = new Signup();
-//		user.setId(id);
-//		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
-//		model.addAttribute("user", user);
-//		model.addAttribute("item", item);
-//		model.addAttribute("start", 1);
-//		model.addAttribute("id", id);
-//		try {
-//			
-//		
-//		} catch (NameNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("/item-info/is_participant GET");
-//		String returnStatement = "redirect:/item-info?id=";
-//		returnStatement += id;
-//		return returnStatement;
-//	}
-
-	@RequestMapping(value = "/allergens/{id}", method = RequestMethod.GET)
-	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String id) {
-		try {
-			Signup signup = new Signup();
-			signup.setId(Integer.parseInt(id));
-
-			model.addAttribute("allergens", itemDao.getAllergens(signup));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "allergens";
-	}
 
 	@RequestMapping(value = "/item-search", method = RequestMethod.GET)
 	public String itemSearchGet(Item item, Signup user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
 			@RequestParam(value = "start", required = true) int start,
-			@RequestParam(value = "id", required = true) int id) {
+			@RequestParam(value = "id", required = true) int id, RedirectAttributes redirectAttrs) {
 		try {
+			model.addAttribute("showAll", model.asMap().get("showAll"));
+			redirectAttrs.addFlashAttribute("showAll", true);
 			item.setParticipantID(id);
 			if (start == 1) {
 				model.addAttribute("results",
@@ -236,21 +143,13 @@ public class ItemController {
 	public String itemSearchPost(Item item, User user, Locale locale, Model model,
 			@RequestParam(value = "q", required = true) String searchTerms,
 			@RequestParam(value = "start", required = true) int start,
-			@RequestParam(value = "id", required = true) int id) {
-		// try {
+			@RequestParam(value = "id", required = true) int id, RedirectAttributes redirectAttrs) {
+		model.addAttribute("showAll", model.asMap().get("showAll"));
 		item.setParticipantID(id);
-		// if (start == 1) {
-		// model.addAttribute("results",
-		// itemService.getItemInfoByNameTenResults(testSession, searchTerms,
-		// apiKey));
-		//
-		// }
-		// model.addAttribute("results",
-		// itemService.getItemInfoByNameNextTenResults(testSession, searchTerms,
-		// apiKey, start));
 		model.addAttribute("searchTerms", searchTerms);
 		model.addAttribute("id", id);
 		model.addAttribute("start", start);
+		redirectAttrs.addFlashAttribute("showAll", true);
 		try {
 			model.addAttribute("signup", signupDao.getSignup(id));
 		} catch (NameNotFoundException e) {
@@ -258,10 +157,6 @@ public class ItemController {
 			e.printStackTrace();
 		}
 
-		// } catch (UnsupportedEncodingException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 		try {
 			itemDao.addIngredient(user, item);
 			itemDao.addAllergens(item, itemService.getItemInfoByUPC(item.getUpc()));
@@ -276,47 +171,7 @@ public class ItemController {
 		return redirect;
 	}
 
-	@RequestMapping(value = "/item/{id}", method = RequestMethod.POST)
-	public String participantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
 
-		try {
-
-			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
-			item.setParticipantID(id);
-			itemDao.addIngredient(user, item);
-			model.addAttribute("id", id);
-
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("/item/id POST");
-		return "item";
-	}
-
-	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
-	public String getParticipantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
-		// logger.info("Welcome home! The client locale is {}.", locale);
-		try {
-
-			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
-			item.setParticipantID(id);
-			itemDao.addIngredient(user, item);
-			model.addAttribute("id", id);
-
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("/item/id GET");
-		return "item";
-	}
 
 	@RequestMapping(value = "/item-info/{id}/delete", method = RequestMethod.POST)
 	public String deleteIngredient(@PathVariable int id, Model model, User user, Item item) {
@@ -335,5 +190,135 @@ public class ItemController {
 
 		return redirect;
 	}
+//	@RequestMapping(value = "/item/{id}", method = RequestMethod.POST)
+//	public String participantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
+//
+//		try {
+//
+//			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
+//			item.setParticipantID(id);
+//			itemDao.addIngredient(user, item);
+//			model.addAttribute("id", id);
+//
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("/item/id POST");
+//		return "item";
+//	}
+
+//	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
+//	public String getParticipantId(User user, Item item, Model model, @PathVariable int id, String searchTerms) {
+//		// logger.info("Welcome home! The client locale is {}.", locale);
+//		try {
+//
+//			model.addAttribute("results", itemService.getItemInfoByName(testSession, searchTerms, apiKey));
+//			item.setParticipantID(id);
+//			itemDao.addIngredient(user, item);
+//			model.addAttribute("id", id);
+//
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("/item/id GET");
+//		return "item";
+//	}
+//	@RequestMapping(value = "/item-info/is_participant")
+//	public String itemInfoForParticipant(Locale locale, Model model, Item item,
+//			@RequestParam(value = "id", required = true) int id,
+//			@RequestParam(value = "isParticipant", required = false) int isParticipant) {
+//
+//		Signup user = new Signup();
+//		user.setId(id);
+//		model.addAttribute("ingredients", itemDao.getAllIngredients(user).getIngredients());
+//		model.addAttribute("user", user);
+//		model.addAttribute("item", item);
+//		model.addAttribute("start", 1);
+//		model.addAttribute("id", id);
+//		try {
+//			
+//		
+//		} catch (NameNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("/item-info/is_participant GET");
+//		String returnStatement = "redirect:/item-info?id=";
+//		returnStatement += id;
+//		return returnStatement;
+//	}
+	
+//	@RequestMapping(value = "/item", method = RequestMethod.GET)
+//	public String participantList(User user, Item item, Locale locale, Model model,
+//			@RequestParam(value = "q", required = false) String searchTerms,
+//			@RequestParam(value = "id", required = true) int id,
+//			@RequestParam(value = "start", required = true) int start) {
+//
+//		try {
+//			item.setParticipantID(id);
+//			if (start == 1) {
+//				model.addAttribute("results",
+//						itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
+//
+//			}
+//			model.addAttribute("results",
+//					itemService.getItemInfoByNameNextTenResults(testSession, searchTerms, apiKey, start));
+//			model.addAttribute("searchTerms", searchTerms);
+//			model.addAttribute("id", id);
+//			model.addAttribute("start", start);
+//
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("/item GET");
+//		return "item";
+//	}
+
+//	@RequestMapping(value = "/item", method = RequestMethod.POST)
+//	public String participantListPost(User user, Item item, Model model,
+//			@RequestParam(value = "q", required = false) String searchTerms,
+//			@RequestParam(value = "id", required = true) int id) {
+//
+//		try {
+//
+//			model.addAttribute("results", itemService.getItemInfoByNameTenResults(testSession, searchTerms, apiKey));
+//			itemDao.addIngredient(user, item);
+//
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("/item POST");
+//		String redirect = "redirect:/item-info?id=";
+//		redirect += id;
+//
+//		return redirect;
+//	}
+//	@RequestMapping(value = "/allergens/{id}", method = RequestMethod.GET)
+//	public String itemAllergenInfo(Locale locale, Model model, @PathVariable String id) {
+//		try {
+//			Signup signup = new Signup();
+//			signup.setId(Integer.parseInt(id));
+//
+//			model.addAttribute("allergens", itemDao.getAllergens(signup));
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return "allergens";
+//	}
+
 
 }

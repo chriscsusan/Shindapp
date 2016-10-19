@@ -79,15 +79,18 @@ legend {
 			<legend>Ingredient List</legend>
 			<form method="POST" action="<c:url value="/item-info/${id}/delete"/>">
 				<c:forEach var="ingredient" items="${ingredients}">
-					<li><a href="<c:url value="/allergens/${ingredient.upc}"/>"><c:out
-								value="${ ingredient.name }" /></a>
+					<li><c:out
+								value="${ ingredient.name }" />
+						<c:if test="${showAll=='true'}">					
 						<button name="foodName" type="submit" value="${ ingredient.name }">Delete</button>
+						</c:if>
 						<input type="hidden" name="id" value="${id}" />
 				</c:forEach>
 			</form>
 
 		</div>
 	</div>
+	 <c:if test="${showAll!='true'}">
 	 <div>
 	 <form method="post">
 	 Is this your dish?
@@ -99,7 +102,7 @@ legend {
 	 <input type="hidden" name="dishName" value="${signupEntry.dishName}" />
 	 </form>
 	 </div>
-	 
+	 </c:if>
 	 
 	 <c:if test="${showAll=='true'}">
 	<fieldset>
