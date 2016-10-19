@@ -43,13 +43,14 @@ public class SignUpController {
 		model.addAttribute("signup", new Signup());
 		List<Item> dishList = new ArrayList<Item>();
 		List<Ingredient> ingredientList = new ArrayList<>();
-		List<ArrayList> listOfDishAllergens = new ArrayList<>();
+		List<int[]> listOfDishAllergens = new ArrayList<>();
 		for(Signup signup: signupDao.getAllSignup()){
 			
 			try {
 				signup.setItem(signupDao.getSignup(signup.getId()).getItem());
-				listOfDishAllergens.add(signupDao.getSignup(signup.getId()).getItem().getAllergens());
-			} catch (NameNotFoundException e) {
+				int[] allergens = itemDao.getAllergens(signup);
+				listOfDishAllergens.add(allergens);
+			} catch (NameNotFoundException | FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
