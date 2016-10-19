@@ -1,10 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 
+<<<<<<< Updated upstream
 	
+=======
+>>>>>>> Stashed changes
 <html>
 <a href="<c:url value="/sign-up"/>">Sign Up</a>
 <head>
+<<<<<<< Updated upstream
 <style>
 div.background {
 	background:
@@ -102,5 +106,76 @@ label {
 	</table>
 </body>
 
+=======
+<title>Let's Eat </title>
+<link rel="stylesheet" type="text/css" href="resources/home.css">
+</head>
+<body>
+
+
+
+<nav>
+	<a href="<c:url value="/"/>">HOME</a>
+	<a href="<c:url value="/sign-up"/>">SIGN UP</a>
+	<a href="<c:url value="/aboutus"/>">ABOUT US</a>
+</nav>
+<div id= "background">
+    <h1> LET'S EAT <br> Potluck Planning</h1>
+
+</div>
+  <style>
+  *{
+	margin:0;
+}
+html,body{
+	height:100%;
+	width: 100%;
+	background-image: url("http://www.ezyhealth.com/magazine/wp-content/uploads/2015/03/iStock_000046272610_Large.jpg");
+	background-repeat: no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+  	background-size: cover;}
+  position:cover;
+	
+}	
+h1, h2, h3, h4, h5, h6, p{
+	margin-bottom :20px;
+}
+
+nav{
+	position: fixed;
+	width:100%;
+	height:50px;
+	background-color: rgba(0,0,0,.5);
+	z-index: 99;
+	text-align: right;
+}
+
+	
+nav a{
+text-decoration: none;
+color:#fff;
+margin-left: 30px;
+line-height: 50px;
+
+}
+
+#background h1{
+      position:absolute;
+      repeat:no repeat;
+      right:0;
+      left:0;
+      top: 50%;
+      margin: 1px auto;
+      text-align: center;
+      color:white;
+      font-family: script;
+      font-style: italic;
+      font-size:300%;
+          }    
+
+  </style>
+>>>>>>> Stashed changes
 </body>
 </html>
