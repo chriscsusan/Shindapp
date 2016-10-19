@@ -1,11 +1,39 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <html>
-<head>
-<title>Home</title>
-</head>
 <a href="<c:url value="/"/>">Home</a>
+<head>
 <body>
+<title>Home</title>
+
+
+
+<style>
+div.background {
+	background:
+		url(http://foodsafety.neogen.com/images/headers/allergens/Allergens.png)
+		repeat;
+	opacity: 1;
+	border: 2px solid black;
+}
+
+div.transbox {
+	margin: 20px;
+	background-color: #ffffff;
+	border: 1px solid black;
+	opacity: 0.8;
+	filter: sepia(opacity = 60);
+	font-weight: bold;
+	/* For IE8 and earlier */
+}
+
+div.transbox p {
+	margin: 5%;
+	font-weight: bold;
+	color: #000000;
+	</body>
+</style>
+</head>
 	
 	
 	<h2>${signupEntry.dishName}: brought by ${signupEntry.firstName} ${signupEntry.lastName}</h2>

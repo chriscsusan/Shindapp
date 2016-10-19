@@ -99,8 +99,7 @@ legend {
 				Number*:</label> <input type="text" name="phoneNumber"
 				value="${signupEntry.phoneNumber}" /> <label for='dish'>Dish
 				name*:</label> <input type="text" name="dishName"
-				value="${signupEntry.dishName}" /> <input type='submit'
-				name='Submit' value='Submit' />
+				value="${signupEntry.dishName}" /> <button type='submit' name='Submit' value='Submit'>submit</button>
 		</form>
 		<form method="post"
 			action="<c:url value="/sign-up/${signupEntry.id}/delete"/>">
