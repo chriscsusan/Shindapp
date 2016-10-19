@@ -96,7 +96,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 
 	@Override
 	public void updateSignup(Signup signup) throws NamingException {
-		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ? WHERE potluckid = ?";
+		String sql = "UPDATE signup SET firstname = ?, lastname = ?, phonenumber = ?, dishname = ? WHERE id = ?";
 		try (Connection conn = connectionFactory.getConnection();
 				PreparedStatement statement = conn.prepareStatement(sql)) {
 
@@ -105,7 +105,7 @@ public class SignupDaoJdbcImpl implements SignupDao {
 			statement.setString(3, signup.getPhoneNumber());
 			statement.setString(4, signup.getDishName());
 			statement.setInt(5, signup.getId());
-			statement.setInt(6, signup.getPotluckId());
+			//statement.setInt(6, signup.getPotluckId());
 			
 			int rowsUpdated = statement.executeUpdate();
 			if (rowsUpdated != 1) {

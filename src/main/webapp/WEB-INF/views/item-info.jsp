@@ -2,7 +2,7 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
+<title>Dish Information</title>
 <style>
 div.background {
 	background:
@@ -88,6 +88,20 @@ legend {
 
 		</div>
 	</div>
+	 <div>
+	 <form method="post">
+	 Is this your dish?
+	 Enter pin: <input type="text" name="pin"/><button type="submit">Submit</button>
+	 <input type="hidden" name="id" value="${id}" />
+	 <input type="hidden" name="firstName" value="${signupEntry.firstName}" />
+	 <input type="hidden" name="lastName" value="${signupEntry.lastName}" />
+	 <input type="hidden" name="phoneNumber" value="${signupEntry.phoneNumber}" />
+	 <input type="hidden" name="dishName" value="${signupEntry.dishName}" />
+	 </form>
+	 </div>
+	 
+	 
+	 <c:if test="${showAll=='true'}">
 	<fieldset>
 		<form method='post'>
 
@@ -118,7 +132,7 @@ legend {
 		</div>
 		<button type="submit">Search</button>
 	</form>
-
+      </c:if>
 
 </body>
 </html>
