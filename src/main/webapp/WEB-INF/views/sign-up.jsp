@@ -2,7 +2,7 @@
 <%@ page session="false"%>
 <html>
 
- <a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>
+<!--   <a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>-->
 <head>
 <style>
 
@@ -15,7 +15,7 @@ div.background {
 }
 
 div.transbox {
-	margin: 30px;
+	margin: 20px;
 	background-color: #ffffff;
 	border: 1px solid black;
 	opacity: 0.8;
@@ -47,6 +47,11 @@ table {
 th, td {
 	padding: 15px;
 }
+th{
+color: brown;
+font-weight: bold;
+font-size: 30 px
+}
 
 button {
 	background-color: #FFA500;
@@ -66,7 +71,21 @@ label {
 	color: black;
 	font-weight: bold;
 }
+nav{
+	
+	width:100%;
+	height:50px;
+	z-index: 99;
+	text-align: right;
+}
 
+	
+nav a{
+text-decoration: none;
+color: brown;
+margin-left: 30px;
+line-height: 50px;
+}
 
 </style>
 </head>
@@ -92,12 +111,13 @@ label {
 
 			</form>
 			</p>
+			<br></br>
 		</div>
 	</div>
-	<form method="post"
-		action="<c:url value="/sign-up/${signup.id}/delete"/>">
-		<button type="submit">Delete</button>
-	</form>
+	<nav>
+	<a href="<c:url value="/"/>">HOME</a>
+	<a href="<c:url value="/sign-up"/>">SIGN UP</a>
+</nav>
 <div>
 
 <br></br>

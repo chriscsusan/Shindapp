@@ -8,7 +8,7 @@
 <body>
 	<h1>Ingredient List</h1>
 
-	<P>The results for</P>
+	<P>Results:</P>
 	
 		<c:forEach var="result" items="${results}">
 		<form method=POST>

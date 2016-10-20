@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <html>
-<a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>
+<!--  <a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>-->
 <head>
 <body>
 <title>Ingredient Search Results</title>
@@ -9,7 +9,7 @@
 <style>
 div.background {
 	background:
-		url(http://foodsafety.neogen.com/images/headers/allergens/Allergens.png)
+		url(http://www.kcallergy.com/wp-content/uploads/2015/06/foodallergies.jpg)
 		repeat;
 	opacity: 1;
 	border: 2px solid black;
@@ -29,13 +29,71 @@ div.transbox p {
 	margin: 5%;
 	font-weight: bold;
 	color: #000000;
-	</body>
+}
+
+body {
+	color: Black;
+}
+
+button {
+	background-color: #FFA500;
+	border: none;
+	color: white;
+	padding: 8px 18px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 12px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+h1 {
+	color: brown;
+	text-align: center;
+}
+
+h2 {
+	color: brown;
+	text-align: center;
+}
+
+label {
+	font: normal 20px ariel bold !important;
+	color: brown;
+	font-weight: bold;
+}
+
+legend {
+	font: normal 30px ariel bold !important;
+	color: black;
+	font-weight: bold;
+}
+nav{
+	
+	width:100%;
+	height:50px;
+	z-index: 99;
+	text-align: right;
+}
+
+	
+nav a{
+text-decoration: none;
+color: brown;
+margin-left: 30px;
+line-height: 50px;
+}
+</style>
 </style>
 </head>
-	
+	<div class="background">
+		<div class="transbox">
 	
 	<h2>${signupEntry.dishName}: brought by ${signupEntry.firstName} ${signupEntry.lastName}</h2>
-	<h5>Ingredient List</h5>
+	<h3>Ingredient List</h3>
+	
+	
 	<form method=POST>
 		<c:forEach var="ingredient" items="${ingredients}">
 			<li><a href="<c:url value="/allergens/${ingredient.upc}"/>"><c:out value="${ ingredient.name }"/></a>
@@ -43,7 +101,19 @@ div.transbox p {
 			<input type = "hidden" name = "id" value = "${user.id}">
 		</c:forEach>
 	</form>	
-	
+	</div>
+	</div>
+	<br></br>
+		</div>
+	</div>
+	<nav>
+	<a href="<c:url value="/"/>">HOME</a>
+	<a href="<c:url value="/sign-up"/>">SIGN UP</a>
+</nav>
+<div>
+
+<br></br>
+</div>
 	<fieldset>
 	<form method='post'>
 		
@@ -63,18 +133,18 @@ div.transbox p {
 		<button type="submit">Delete entry in sign-up table</button>
 	</form>
 </fieldset>
-		<h1>Ingredient Search:</h1>
+		<h1>Ingredient Search: Make a list of your dish's ingredients one by one to identify if it contains an allegen</h1>
 
 
 	<form method=get action="<c:url value="/item-search?q=${q}&id=${id}$start=${start}"/>">
 	<div>
-		<label>Search for ingredient:</label><input type="text" name="q" value="">
+		<label>Enter an ingredient:</label><input type="text" name="q" value="">
 		<input type="hidden" name="id" value="${user.id}">
 		<input type="hidden" name="start" value="${start}">
 	</div>
 	<button type="submit">Search</button>
 	</form>
-	<P>The results for</P>
+	<P>Results:</P>
 	
 		<c:forEach var="result" items="${results}">
 		<form method=POST>
