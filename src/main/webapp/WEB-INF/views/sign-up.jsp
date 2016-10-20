@@ -1,9 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page session="false"%>
 <html>
 
 <!--   <a href="<c:url value="/"/>">Home</a><a href="javascript:history.back()">Go Back</a>-->
 <head>
+<title>Potluck Sign-up</title>
 <style>
 
 div.background {
@@ -135,8 +137,8 @@ line-height: 50px;
 			<th>Allergens</th>
 
 		</tr>
-
-		<c:forEach var="user" items="${list}">
+		
+		<c:forEach var="user" items="${list}" varStatus="l">
 
 			<tr>
 				<td><c:out value="${ user.firstName }" /></td>
@@ -147,12 +149,32 @@ line-height: 50px;
 				<td><c:set var="allergens" value="${user.allergenList}"/> 
 						<c:forEach var="i" items="${allergens}" varStatus="n">
 						<c:if test="${i=='1'}">
-							<img src="resources/${n.index}.jpg">
+							<img src="resources/${n.index}.jpg" style="width:35px;height:35px;">
 						</c:if>
 					</c:forEach></td>
-			</tr>
-			
+					<c:if test="${l.index=='0'}">
+					<td rowspan="${fn:length(list)}">
+					<img src="resources/0.jpg" style="width:35px;height:35px;"> - Cereals<br/>
+					<img src="resources/1.jpg" style="width:35px;height:35px;"> - Shellfish<br/>
+					<img src="resources/2.jpg" style="width:35px;height:35px;"> - Eggs<br/>
+					<img src="resources/3.jpg" style="width:35px;height:35px;"> - Fish<br/>
+					<img src="resources/4.jpg" style="width:35px;height:35px;"> - Milk<br/>
+					<img src="resources/5.jpg" style="width:35px;height:35px;"> - Peanuts<br/>
+					<img src="resources/6.jpg" style="width:35px;height:35px;"> - Sulfites<br/>
+					<img src="resources/7.jpg" style="width:35px;height:35px;"> - Treenuts<br/>
+					<img src="resources/8.jpg" style="width:35px;height:35px;"> - Soybeans<br/>
+					<img src="resources/9.jpg" style="width:35px;height:35px;"> - Sesame seeds<br/>
+					<img src="resources/10.jpg" style="width:35px;height:35px;"> - Gluten<br/>
+					<img src="resources/11.jpg" style="width:35px;height:35px;"> - Lactose<br/>
+					<img src="resources/12.jpg" style="width:35px;height:35px;"> - Corn<br/>
+					<img src="resources/13.jpg" style="width:35px;height:35px;"> - Wheat<br/>
+					<img src="resources/14.jpg" style="width:35px;height:35px;"> - Coconut<br/>
+					</td>
+					</c:if>
+		</tr>	
 		</c:forEach>
+		
+					
 		<tr></tr>
 
 	</table>
